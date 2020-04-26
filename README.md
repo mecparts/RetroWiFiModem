@@ -460,3 +460,13 @@ Arduino IDE.
 [Virtual modem for ESP8266](https://github.com/jsalin/esp8266_modem)<br>
 [ESP8266 based virtual modem](https://github.com/stardot/esp8266_modem)<br>
 [ESP8266 based virtual modem](https://github.com/RolandJuno/esp8266_modem)
+
+## Acknowledgments
+
+* A whole lot of people owe a big vote of thanks to Jussi Salin for
+releasing their virtual modem code for the ESP8266 and starting the
+ball rolling.
+* Paul Rickards for an amazing bit of hardware to draw inspiration from.
+* All the Stardot contributors for their work.
+* And, of course, Dennis C. Hayes for creating something so simple and
+elegant that has stood the test of time.
