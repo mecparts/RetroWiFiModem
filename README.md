@@ -2,7 +2,7 @@
 
 ## An ESP8266 based RS232 \<-\> WiFi modem with AT style commands and blinking LEDs
 
-![Front Panel](images/Front Panel.jpg "Front Panel")
+![Front Panel](images/Front%20Panel.jpg "Front Panel")
 
 This project grew out of a desire to get an old Ampro LB+/Z80 hooked up
 to the Internet.
@@ -93,12 +93,12 @@ regulator on board that they can get away with to power the board, and
 they don't have a lot of mA's left over to power anything else. Better
 safe than sorry.
 
-![Back Panel](images/Back Panel.jpg "Back Panel")
+![Back Panel](images/Back%20Panel.jpg "Back Panel")
 
 The power connector expects a 2.1mm I.D. x 5.5mm O.D. barrel plug,
 delivering 5 volts, centre positive.  I used a Tri-Mag L6R06H-050 (5V,
 1.2A), [Digikey part#
-364-1251-ND](https://www.digikey.com/product-detail/en/tri-mag-llc/L6R06H-050/364-1251-ND/7682614).  
+364-1251-ND](https://www.digikey.com/product-detail/en/tri-mag-llc/L6R06H-050/364-1251-ND/7682614).
 If you plug in a 9V adapter like you'd use for an Arduino, you *will*
 let the magic smoke out and have an ex-modem on your hands.
 
@@ -172,7 +172,7 @@ network.
 3. `ATC1` to connect to the network.
 4. Optional stuff:
    * `AT$SB=speed` to set the default serial speed.
-   * `AT$SU=dps` to set the data bits, parity and stop bits. 
+   * `AT$SU=dps` to set the data bits, parity and stop bits.
    * `ATNETn` to select whether or not to use Telnet protocol.
    * `AT&kn` to use RTS/CTS flow control.
 5. `AT&W` to save the settings.
