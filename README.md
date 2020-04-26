@@ -93,7 +93,7 @@ regulator on board that they can get away with to power the board, and
 they don't have a lot of mA's left over to power anything else. Better
 safe than sorry.
 
-![Back Panel](images/Back%20Panel.jpg "Back Panel")
+![Back Panel](images/Back%20panel.jpg "Back Panel")
 
 The power connector expects a 2.1mm I.D. x 5.5mm O.D. barrel plug,
 delivering 5 volts, centre positive.  I used a Tri-Mag L6R06H-050 (5V,
