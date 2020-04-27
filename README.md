@@ -392,14 +392,14 @@ password. The maximum length of the password is 64 characters.
 
 #### AT$SB?, AT$SB=*n*
 
-Query or change the current baud rate. Valid values for "n" are 300,
-1200, 2400, 4800, 9600, 19200, 38400, 57600 and 115200. Any other value
-will return an ERROR message. The baud rate is silently changed when a
-valid value is entered; no OK message is returned. The default baud rate
-is 1200. The Retro WiFi modem does not automatically detect baud rate
-like a dialup modem. The baud rate setting must match that of your
-terminal to operate properly. It will display garbage in your terminal
-otherwise.
+Query or change the current baud rate. Valid values for "n" are 110,
+300, 450, 600, 710, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 76800
+and 115200. Any other value will return an ERROR message. The baud rate
+is silently changed when a valid value is entered; no OK message is
+returned. The default baud rate is 1200. The Retro WiFi modem does not
+automatically detect baud rate like a dialup modem. The baud rate
+setting must match that of your terminal to operate properly. It will
+display garbage in your terminal otherwise.
 
 #### AT$SP?, AT$SP=*n*
 
