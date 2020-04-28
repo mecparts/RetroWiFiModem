@@ -1,6 +1,6 @@
 # Retro WiFi modem
 
-## An ESP8266 based RS232 \<-\> WiFi modem with AT style commands and blinking LEDs
+## An ESP8266 based RS232 \<-\> WiFi modem with Hayes AT style commands and LED indicators
 
 ![Front Panel](images/Front%20Panel.jpg "Front Panel")
 
@@ -453,13 +453,71 @@ version as I built it rather than have the modem *pull* it. So that's
 what I did. It uses the default OTA upload capability built into the
 Arduino IDE.
 
+### RTS/CTS handshaking and a dead spin loop issue
+
+Something I noticed with ESP8266 software that puzzled me was the
+number of places I saw a series of Serial print statements being broken
+up with calls to yield(), like so:
+
+```
+   Serial.print("Hello world!\n");
+   yield();
+   Serial.print"How are you today?\n");
+   yield();
+```
+It didn't take long to figure out what was going on; The print() call
+was blocking, and at lower baud rates, even printing a few relatively
+short strings was enough to cause the watchdog to bark and cause a
+reset. So the repeatative yield() calls were an attempt to feed the
+watchdog often enough to keep it from barking.
+
+What does this have to do with RTS/CTS handshaking? Simply put,
+lowering RTS for more than a few seconds was causing the watchdog to
+bark as well. So I started digging.
+
+In cores/esp8266/uart.cpp I found the following function:
+
+```
+static void
+uart_do_write_char(const int uart_nr, char c)
+{
+    while(uart_tx_fifo_full(uart_nr));
+
+    USF(uart_nr) = c;
+}
+```
+
+This is the low level function that everything calls to send a character
+out the serial port. The cause of the watchdog barking is in the dead
+spin while loop. It waits until there's room in the transmit FIFO to add
+another character. So if RTS/CTS handshaking is enabled, and RTS is low
+for longer than the watchdog likes: woof.
+
+What I did to quiet the watchdog down both when sending long strings at
+low baud rates and during long waits for RTS to come active again was to
+add a yield() call to the dead spin while loop, like so:
+
+```
+static void
+uart_do_write_char(const int uart_nr, char c)
+{
+    while(uart_tx_fifo_full(uart_nr))
+      yield();
+
+    USF(uart_nr) = c;
+}
+```
+
+This way, no matter how long the code has to wait for space in the
+transmit FIFO, the watchdog is kept well fed and quiet.
+
 ## References
 
-[WiFi232 - An Internet Hayes Modem for your Retro Computer](http://biosrhythm.com/?page_id=1453)<br>
-[WiFi232's Evil Clone](http://www.vcfed.org/forum/entry.php?740-WiFi232-s-Evil-Clone&bt=1056)<br>
-[Virtual modem for ESP8266](https://github.com/jsalin/esp8266_modem)<br>
-[ESP8266 based virtual modem](https://github.com/stardot/esp8266_modem)<br>
-[ESP8266 based virtual modem](https://github.com/RolandJuno/esp8266_modem)
+* [WiFi232 - An Internet Hayes Modem for your Retro Computer](http://biosrhythm.com/?page_id=1453)<br>
+* [WiFi232's Evil Clone](http://www.vcfed.org/forum/entry.php?740-WiFi232-s-Evil-Clone&bt=1056)<br>
+* [Jussi Salin's Virtual modem for ESP8266](https://github.com/jsalin/esp8266_modem)<br>
+* [Stardot's ESP8266 based virtual modem](https://github.com/stardot/esp8266_modem)<br>
+* [Roland Juno's ESP8266 based virtual modem](https://github.com/RolandJuno/esp8266_modem)
 
 ## Acknowledgments
 
