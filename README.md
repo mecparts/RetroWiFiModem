@@ -85,7 +85,7 @@ The PCB is laid out for a
 software expects to see just that. If you're just using the software and
 not the PCB, there's no reason you couldn't use another kind of ESP8266
 board; I used a D1 R1 myself when I was developing the modem. You'd just
-need to add pin definitions for your board in RetroWifiModem.h.
+need to add pin definitions for your board in RetroWiFiModem.h.
 
 A separate 3.3V regulator is used to power the MAX3232 IC and 74HC32
 quad OR gate. Some (most?) D1 mini clones have the smallest 3.3V
@@ -97,7 +97,7 @@ safe than sorry.
 
 The power connector expects a 2.1mm I.D. x 5.5mm O.D. barrel plug,
 delivering 5 volts, centre positive.  I used a Tri-Mag L6R06H-050 (5V,
-1.2A), [Digikey part#
+1.2A), [DigiKey part#
 364-1251-ND](https://www.digikey.com/product-detail/en/tri-mag-llc/L6R06H-050/364-1251-ND/7682614).
 If you plug in a 9V adapter like you'd use for an Arduino, you *will*
 let the magic smoke out and have an ex-modem on your hands.
@@ -107,7 +107,7 @@ let the magic smoke out and have an ex-modem on your hands.
 On the off chance that there's someone else out there with a well
 stocked parts box and a burning desire to put together their own WiFi
 modem, there's a [BOM](kicad/RetroWiFiModem-bom.csv) in the kicad
-subdirectory. If you actually had to go out and buy all the parts, it
+sub directory. If you actually had to go out and buy all the parts, it
 really wouldn't be cost effective.
 
 Then again, how practical is getting an Ampro Little Board on the
@@ -117,7 +117,7 @@ worth the effort.
 ### Didn't make the cut
 
 I have to admit that I semi-seriously considered adding one of those
-little audio playback modules for faux dialling and connection sounds.
+little audio playback modules for faux dialing and connection sounds.
 It would have been in keeping with the whole retro theme. But in the end
 I decided not to. Maybe next time.
 
@@ -189,261 +189,46 @@ fine; ATS 0=  1 is not). Commands that take a string as an argument
 (e.g. AT$SSID=, AT$TTY=) assume that *everything* that follows is a part
 of the string, so no commands are allowed after them.
 
-#### +++
-
-Online escape code. Once your modem is connected to another device, the
-only command it recognises is an escape code of a one second pause
-followed by three typed plus signs and another one second pause,
-which puts the modem back into local command mode.
-
-#### A/
-
-Repeats the last command entered. Do not type AT or press Enter.
-
-#### AT
-
-The attention prefix that precedes all command except A/ and +++.
-
-#### AT?
-
-Displays a help cheatsheet.
-
-#### ATA
-
-Force the modem to answer an incoming connection when the conditions
-for auto answer have not been satisfied.
-
-#### ATC?, ATC*n*
-
-Query or change the current WiFi connection status. A result of 0 means
-that the modem is not connected to WiFi, 1 means the modem is connected.
-The command ATC0 disconnects the modem from a WiFi connection. ATC1
-connects the modem to the WiFi.
-
-#### ATDS*n*
-
-Calls the host specified in speed dial slot *n* (0-9).
-
-#### ATDT*host[:port]*
-
-Tries to establish a WiFi TCP connection to the specified host name or
-IP address. If no port number is given, 23 (Telnet) is assumed. You can
-also use ATDT to dial one of the speed dial slots in one of two ways:
-
-* The alias in each speed dial slot is checked to see if it matches the
-specified hostname.
-* A host specified as 7 identical digits dials the slot indicated by the
-digit. (i.e. 2222222 would speed dial the host in slot 2).
-
-#### ATE?, ATE*n*
-
-Command mode echo. Enables or disables the display of your typed commands.
-
-* E0 Command mode echo OFF. Your typing will not appear on the screen.
-* E1 Command mode echo ON. Your typing will appear on the screen.
-
-#### ATGET*http://host[/page]*
-
-Displays the contents of a website page. **https** connections are not
-supported. Once the contents have been displayed, the connection will
-automatically terminate.
-
-###ATH
-
-Hangs up (ends) the current connection.
-
-#### ATI
-
-Displays the current network status, including sketch build date, WiFi
-and call connection state, SSID name, IP address, and bytes transferred.
-
-#### ATNET?, ATNET*n*
-
-Query or change whether telnet protocol is enabled. A result of 0 means
-that telnet protocol is disabled; 1 is *Real* telnet protocol and 2 is
-*Fake* telnet protocol. If you are connecting to a telnet server, it may
-expect the modem to respond to various telnet commands, such as terminal
-name (set with `AT$TTY`), terminal window size (set with `AT$TTS`)
-or terminal speed. Telnet protocol should be enabled for these sites,
-or you will at best see occasional garbage characters on your screen,
-or at worst the connection may fail.
-
-The difference between *real* and *fake* telnet protocol is this: with
-*real* telnet protocol, a carriage return (CR) character being sent from
-the modem to the telnet server always has a NUL chararacter added after
-it. The implementation of the telnet protocol used by some BBSes doesn't
-properly strip out the NUL character. When connecting to such BBSes
-(Particles! is one), use *fake* telnet.
-
-When using *real* telnet protocol, when the telnet server sends a CR
-character followed by a NUL character, only the CR character will be
-sent to the serial port; the NUL character will be silently stripped out.
-With *fake* telnet protocol, the NUL will be passed through.
-
-#### ATO
-
-Return online. Use with the escape code (+++) to toggle between command
-and online modes.
-
-#### ATQ?, ATQ*n*
-
-Enable or disable the display of result codes. The default is Q0.
-
-* Q0 Display result codes.
-* Q1 Suppress result codes (quiet).
-
-#### ATRD/ATRT
-
-Displays the current UTC date and time from NIST in the format *YY-MM-DD HH:MM:SS*.
-A WiFi connection is required and you cannot be connected to another site.
-
-#### ATS0?, ATS0=*n*
-
-Display or set the number of "rings" before answering an incoming
-connection. Setting `S0=0` means "don't answer".
-
-#### ATV?, ATV*n*
-
-Display result codes in words or numbers. The default is V1.
-
-* V0 Display result codes in numeric form.
-* V1 Display result codes in text form.
-
-#### ATX?, ATX*n*
-
-Control the amount of information displayed in the result codes. The
-default is X1 (extended codes).
-
-* X0 Display basic codes (CONNECT, NO CARRIER)
-* X1 Display extended codes (CONNECT speed, NO CARRIER (connect time))
-
-#### ATZ
-
-Resets the modem.
-
-#### AT&F
-
-Reset the NVRAM contents and current settings to the sketch defaults.
-All settings, including SSID name, password and speed dial slots are
-affected.
-
-#### AT&K?, AT&K*n*
-
-Data flow control. Prevents the modem’s buffers for received and
-transmitted from overflowing.
-
-* &K0 Disable data flow control.
-* &K1 Use hardware flow control. Requires that your computer and software
-support Clear to Send (CTS) and Request to Send (RTS) at the
-RS-232 interface.
-
-#### AT&R?, AT&R=*server password*
-
-Query or change the password for incoming connections. If set, the user
-has 3 chances in 60 seconds to enter the correct password or the modem
-will end the connection.
-
-#### AT&V*n*
-
-Display current or stored settings.
-
-* &V0 Display current settings.
-* &V1 Display stored settings.
-
-#### AT&W
-
-Save current settings to NVRAM.
-
-#### AT&Zn?, AT&Z*n*=*host[:port],alias*
-
-Store up to 10 numbers in NVRAM, where *n* is the position 0-9 in
-NVRAM, and *host[:port]* is the host string, and *alias* is the speed
-dial alias name. The host string may be up to 50 characters long, and
-the alias string may be up to 16 characters long.
-
-Example: `AT&Z2=particlesbbs.dyndns.org:6400,particles`
-
-This number can then be dialled in any of the following ways:
-
-* `ATDS2`
-* `ATDTparticles`
-* `ATDT2222222`
-
-#### AT$AE?, AT$AE=*startup AT command*
-
-Query or change the command line to be executed when the modem starts up.
-
-#### AT$BM?, AT$BM=*server busy message*
-
-Query or change a message to be returned to an incoming connection if
-the modem is busy (i.e. already has a connection established).
-
-#### AT$MDNS=*mDNS name*
-
-Query or change the mDNS network name (defaults to "espmodem"). When
-a non zero TCP port is defined, you can telnet to that port with
-**telnet mdnsname.local port**.
-
-#### AT$PASS=*WiFi password*
-
-Query or change the current WiFi password. The password is case
-sensitive. Clear the password by issuing the set command with no
-password. The maximum length of the password is 64 characters.
-
-#### AT$SB?, AT$SB=*n*
-
-Query or change the current baud rate. Valid values for "n" are 110,
-300, 450, 600, 710, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 76800
-and 115200. Any other value will return an ERROR message. The baud rate
-is silently changed when a valid value is entered; no OK message is
-returned. The default baud rate is 1200. The Retro WiFi modem does not
-automatically detect baud rate like a dialup modem. The baud rate
-setting must match that of your terminal to operate properly. It will
-display garbage in your terminal otherwise.
-
-#### AT$SP?, AT$SP=*n*
-
-TCP server port to listen on. A value of 0 means that the TCP server is
-disabled, and no incoming connections are allowed.
-
-#### AT$SSID?, AT$SSID=*ssid name*
-
-Query or change the current SSID to the specified name. The given SSID
-name is case sensitive. Clear the SSID by issuing the set command with
-no SSID. The maximum length of the SSID name is 32 characters.
-
-#### AT$SU?, AT$SU=*dps*
-
-Query or change the current number of data bits ('d'), parity ('p') and
-stop bits ('s") of the serial UART. Valid values for 'd' are 5, 6, 7 or
-8 bits. Valid values for 'p' are (N)one, (O)dd or (E)ven parity. Valid
-values for 's' are 1 or 2 bits. The default settings are 8N1. The UART
-setting must match your terminal to work properly.
-
-#### AT$TTL?, AT$TTL=*telnet location*
-
-Query or change the Telnet location value to be returned when the
-Telnet server issues a SEND-LOCATION request. The default value is
-"Computer Room".
-
-#### AT$TTS?, AT$TTS=*WxH*
-
-Query or change the window size (columns x rows) to be returned when
-the Telnet server issues a NAWS (Negotiate About Window Size) request.
-The default value is 80x24.
-
-#### AT$TTY?, AT$TTY=*terminal type*
-
-Query or change the terminal type to be returned when the
-Telnet server issues a TERMINAL-TYPE request. The default value is
-"ansi".
-
-#### AT$W?, AT$W=*n*
-
-Startup wait.
-
-* $W=0 Startup with no wait.
-* $W=1 Wait for the return key to be pressed at startup.
+Command | Details
+------- | -------
++++     | Online escape code. Once your modem is connected to another device, the only command it recognises is an escape code of a one second pause followed by three typed plus signs and another one second pause, which puts the modem back into local command mode.
+A/      | Repeats the last command entered. Do not type AT or press Enter.
+AT      | The attention prefix that precedes all command except A/ and +++.
+AT?     | Displays a help cheatsheet.
+ATA     | Force the modem to answer an incoming connection when the conditions for auto answer have not been satisfied.
+ATC?<br>ATC*n* | Query or change the current WiFi connection status. A result of 0 means that the modem is not connected to WiFi, 1 means the modem is connected. The command ATC0 disconnects the modem from a WiFi connection. ATC1 connects the modem to the WiFi.
+ATDS*n* | Calls the host specified in speed dial slot *n* (0-9).
+<ATDT*host[:port]* | Tries to establish a WiFi TCP connection to the specified host name or IP address. If no port number is given, 23 (Telnet) is assumed. You can also use ATDT to dial one of the speed dial slots in one of two ways:<br><br>* The alias in each speed dial slot is checked to see if it matches the specified hostname.<br>* A host specified as 7 identical digits dials the slot indicated by the digit. (i.e. 2222222 would speed dial the host in slot 2).
+ATE?<br>ATE*n* | Command mode echo. Enables or disables the display of your typed commands.<br><br>* E0 Command mode echo OFF. Your typing will not appear on the screen.<br>* E1 Command mode echo ON. Your typing will appear on the screen.
+ATGET*http://host[/page]* | Displays the contents of a website page. **https** connections are not supported. Once the contents have been displayed, the connection will automatically terminate.
+ATH | Hangs up (ends) the current connection.
+ATI | Displays the current network status, including sketch build date, WiFi and call connection state, SSID name, IP address, and bytes transferred.
+ATNET?<br>ATNET*n* | Query or change whether telnet protocol is enabled. A result of 0 means that telnet protocol is disabled; 1 is *Real* telnet protocol and 2 is *Fake* telnet protocol. If you are connecting to a telnet server, it may expect the modem to respond to various telnet commands, such as terminal name (set with `AT$TTY`), terminal window size (set with `AT$TTS`) or terminal speed. Telnet protocol should be enabled for these sites, or you will at best see occasional garbage characters on your screen, or at worst the connection may fail.<br><br>The difference between *real* and *fake* telnet protocol is this: with *real* telnet protocol, a carriage return (CR) character being sent from the modem to the telnet server always has a NUL character added after it. The implementation of the telnet protocol used by some BBSes doesn't properly strip out the NUL character. When connecting to such BBSes (Particles! is one), use *fake* telnet.<br><br>When using *real* telnet protocol, when the telnet server sends a CR character followed by a NUL character, only the CR character will be sent to the serial port; the NUL character will be silently stripped out. With *fake* telnet protocol, the NUL will be passed through.
+ATO | Return online. Use with the escape code (+++) to toggle between command and online modes.
+ATQ?<br>ATQ*n* | Enable or disable the display of result codes. The default is Q0.<br><br>* Q0 Display result codes.<br>* Q1 Suppress result codes (quiet).
+ATRD<br>ATRT | Displays the current UTC date and time from NIST in the format *YY-MM-DD HH:MM:SS*. A WiFi connection is required and you cannot be connected to another site.
+ATS0?<br>ATS0=*n* | Display or set the number of "rings" before answering an incoming connection. Setting `S0=0` means "don't answer".
+ATV?<br>ATV*n* | Display result codes in words or numbers. The default is V1.<br><br>* V0 Display result codes in numeric form.<br>* V1 Display result codes in text form.
+ATX?<br>ATX*n* | Control the amount of information displayed in the result codes. The default is X1 (extended codes).<br><br>* X0 Display basic codes (CONNECT, NO CARRIER)<br>* X1 Display extended codes (CONNECT speed, NO CARRIER (connect time))
+ATZ | Resets the modem.
+AT&F | Reset the NVRAM contents and current settings to the sketch defaults. All settings, including SSID name, password and speed dial slots are affected.
+AT&K?<br>AT&K*n* | Data flow control. Prevents the modem's buffers for received and transmitted from overflowing.<br><br>* &K0 Disable data flow control.<br>* &K1 Use hardware flow control. Requires that your computer and software support Clear to Send (CTS) and Request to Send (RTS) at the RS-232 interface.
+AT&R?<br>AT&R=*server password* | Query or change the password for incoming connections. If set, the user has 3 chances in 60 seconds to enter the correct password or the modem will end the connection.
+AT&V*n* Display current or stored settings.<br><br>* &V0 Display current settings.<br>* &V1 Display stored settings.
+AT&W | Save current settings to NVRAM.
+AT&Zn?<br>AT&Z*n*=*host[:port],alias* | Store up to 10 numbers in NVRAM, where *n* is the position 0-9 in NVRAM, and *host[:port]* is the host string, and *alias* is the speed dial alias name. The host string may be up to 50 characters long, and the alias string may be up to 16 characters long.<br><br>Example: `AT&Z2=particlesbbs.dyndns.org:6400,particles`<br><br>This number can then be dialled in any of the following ways:<br><br>* `ATDS2`<br>* `ATDTparticles`<br>* `ATDT2222222`
+AT$AE?<br>AT$AE=*startup AT command* | Query or change the command line to be executed when the modem starts up.
+AT$BM?<br>AT$BM=*server busy message* | Query or change a message to be returned to an incoming connection if the modem is busy (i.e. already has a connection established).
+AT$MDNS<br>AT$MDNS=*mDNS name* | Query or change the mDNS network name (defaults to "espmodem"). When a non zero TCP port is defined, you can telnet to that port with **telnet mdnsname.local port**.
+AT$PASS?<br>AT$PASS=*WiFi password* | Query or change the current WiFi password. The password is case sensitive. Clear the password by issuing the set command with no password. The maximum length of the password is 64 characters.
+AT$SB?<br>AT$SB=*n* | Query or change the current baud rate. Valid values for "n" are 110, 300, 450, 600, 710, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 76800 and 115200. Any other value will return an ERROR message. The baud rate is silently changed when a valid value is entered; no OK message is returned. The default baud rate is 1200. The Retro WiFi modem does not automatically detect baud rate like a dialup modem. The baud rate setting must match that of your terminal to operate properly. It will display garbage in your terminal otherwise.
+AT$SP?<br>AT$SP=*n* | TCP server port to listen on. A value of 0 means that the TCP server is disabled, and no incoming connections are allowed.
+AT$SSID?<br>AT$SSID=*ssid name* | Query or change the current SSID to the specified name. The given SSID name is case sensitive. Clear the SSID by issuing the set command with no SSID. The maximum length of the SSID name is 32 characters.
+AT$SU?<br>AT$SU=*dps* | Query or change the current number of data bits ('d'), parity ('p') and stop bits ('s") of the serial UART. Valid values for 'd' are 5, 6, 7 or 8 bits. Valid values for 'p' are (N)one, (O)dd or (E)ven parity. Valid values for 's' are 1 or 2 bits. The default settings are 8N1. The UART setting must match your terminal to work properly.
+AT$TTL?<br>AT$TTL=*telnet location* | Query or change the Telnet location value to be returned when the Telnet server issues a SEND-LOCATION request. The default value is "Computer Room".
+AT$TTS?<br>AT$TTS=*WxH* | Query or change the window size (columns x rows) to be returned when the Telnet server issues a NAWS (Negotiate About Window Size) request. The default value is 80x24.
+AT$TTY?<br>AT$TTY=*terminal type* | Query or change the terminal type to be returned when the Telnet server issues a TERMINAL-TYPE request. The default value is "ansi".
+AT$W?<br>AT$W=*n* | Startup wait.<br><br>* $W=0 Startup with no wait.<br>* $W=1 Wait for the return key to be pressed at startup.
 
 ### Updating the Software
 
@@ -462,13 +247,13 @@ up with calls to yield(), like so:
 ```
    Serial.print("Hello world!\n");
    yield();
-   Serial.print"How are you today?\n");
+   Serial.print("How are you today?\n");
    yield();
 ```
 It didn't take long to figure out what was going on; The print() call
 was blocking, and at lower baud rates, even printing a few relatively
 short strings was enough to cause the watchdog to bark and cause a
-reset. So the repeatative yield() calls were an attempt to feed the
+reset. So the repetitive yield() calls were an attempt to feed the
 watchdog often enough to keep it from barking.
 
 What does this have to do with RTS/CTS handshaking? Simply put,
@@ -519,7 +304,7 @@ transmit FIFO, the watchdog is kept well fed and quiet.
 * [Stardot's ESP8266 based virtual modem](https://github.com/stardot/esp8266_modem)<br>
 * [Roland Juno's ESP8266 based virtual modem](https://github.com/RolandJuno/esp8266_modem)
 
-## Acknowledgments
+## Acknowledgements
 
 * A whole lot of people owe a big vote of thanks to Jussi Salin for
 releasing their virtual modem code for the ESP8266 and starting the
