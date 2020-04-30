@@ -214,7 +214,7 @@ ATZ | Resets the modem.
 AT&F | Reset the NVRAM contents and current settings to the sketch defaults. All settings, including SSID name, password and speed dial slots are affected.
 AT&K?<br>AT&K*n* | Data flow control. Prevents the modem's buffers for received and transmitted from overflowing.<br><br>* &K0 Disable data flow control.<br>* &K1 Use hardware flow control. Requires that your computer and software support Clear to Send (CTS) and Request to Send (RTS) at the RS-232 interface.
 AT&R?<br>AT&R=*server password* | Query or change the password for incoming connections. If set, the user has 3 chances in 60 seconds to enter the correct password or the modem will end the connection.
-AT&V*n* Display current or stored settings.<br><br>* &V0 Display current settings.<br>* &V1 Display stored settings.
+AT&V*n* | Display current or stored settings.<br><br>* &V0 Display current settings.<br>* &V1 Display stored settings.
 AT&W | Save current settings to NVRAM.
 AT&Zn?<br>AT&Z*n*=*host[:port],alias* | Store up to 10 numbers in NVRAM, where *n* is the position 0-9 in NVRAM, and *host[:port]* is the host string, and *alias* is the speed dial alias name. The host string may be up to 50 characters long, and the alias string may be up to 16 characters long.<br><br>Example: `AT&Z2=particlesbbs.dyndns.org:6400,particles`<br><br>This number can then be dialled in any of the following ways:<br><br>* `ATDS2`<br>* `ATDTparticles`<br>* `ATDT2222222`
 AT$AE?<br>AT$AE=*startup AT command* | Query or change the command line to be executed when the modem starts up.
