@@ -146,7 +146,7 @@ char *doSpeedChange(char *atCmd) {
                case 57600L:
                case 76800L:
                case 115200L:
-                  //sendResult(R_OK);  TODO: revisit silent success for AT$SB=n
+                  sendResult(R_OK);
                   Serial.flush();               // wait for transmit to finish
                   digitalWrite(TXEN, HIGH);     // disable the TX output
                   Serial.begin(newSerialSpeed);
@@ -161,8 +161,8 @@ char *doSpeedChange(char *atCmd) {
                   sendResult(R_ERROR);
                   break;
             }
-         //} else {     TODO: revisit silent success for AT$SB=n
-         //   sendResult(R_OK);
+         } else {
+            sendResult(R_OK);
          }
          break;
       default:
