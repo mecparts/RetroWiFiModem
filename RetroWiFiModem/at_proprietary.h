@@ -149,10 +149,7 @@ char *doSpeedChange(char *atCmd) {
                   sendResult(R_OK);
                   Serial.flush();               // wait for transmit to finish
                   digitalWrite(TXEN, HIGH);     // disable the TX output
-                  Serial.begin(newSerialSpeed);
-                  if( settings.rtsCts ) {
-                     setHardwareFlow();
-                  }
+                  Serial.updateBaudRate(newSerialSpeed);
                   settings.serialSpeed = newSerialSpeed;
                   digitalWrite(TXEN, LOW);  // reenable the TX output
                   break;
