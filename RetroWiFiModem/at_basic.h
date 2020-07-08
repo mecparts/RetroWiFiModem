@@ -305,6 +305,7 @@ char *showHelp(char *atCmd) {
 char *showNetworkInfo(char *atCmd) {
    Serial.println(F("Retro WiFi modem")); yield();
    Serial.println("Build......: " __DATE__ " " __TIME__); yield();
+   Serial.printf("Baud.......: %lu\r\n", settings.serialSpeed); yield();
    Serial.print(F("WiFi status: "));
    switch( WiFi.status() ) {
       case WL_CONNECTED:
@@ -329,7 +330,7 @@ char *showNetworkInfo(char *atCmd) {
          Serial.println(F("SCAN COMPLETED"));
          break;
       default:
-         Serial.printf("UKNOWN (%u)\r\n", WiFi.status());
+         Serial.printf("UNKNOWN (%u)\r\n", WiFi.status());
          break;
    }
    yield();
