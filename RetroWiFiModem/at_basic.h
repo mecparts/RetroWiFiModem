@@ -144,6 +144,22 @@ char *dialNumber(char *atCmd) {
       }
    }
 
+   sessionTelnetType = settings.telnet;
+   switch( host[0] ) {
+      case '-':
+         ++host;
+			sessionTelnetType = NO_TELNET;
+         break;
+      case '=':
+         ++host;
+			sessionTelnetType = REAL_TELNET;
+         break;
+      case '+':
+         ++host;
+			sessionTelnetType = FAKE_TELNET;
+         break;
+   }
+
    yield();
    if( settings.extendedCodes ) {
       Serial.printf("DIALLING %s:%u\r\n", host, portNum);

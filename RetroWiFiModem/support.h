@@ -51,7 +51,7 @@ void sendSerialData() {
    static unsigned long lastSerialData = 0;
    // in telnet mode, we might have to escape every single char,
    // so don't use more than half the buffer
-   size_t maxBufSize = (settings.telnet != NO_TELNET) ? TX_BUF_SIZE / 2 : TX_BUF_SIZE;
+   size_t maxBufSize = (sessionTelnetType != NO_TELNET) ? TX_BUF_SIZE / 2 : TX_BUF_SIZE;
    size_t len = Serial.available();
    if( len > maxBufSize) {
       len = maxBufSize;
@@ -83,12 +83,12 @@ void sendSerialData() {
    //
    // also in Telnet mode, escape every CR (0x0D) by inserting a NUL
    // after it into the buffer
-   if( settings.telnet != NO_TELNET ) {
+   if( sessionTelnetType != NO_TELNET ) {
       for( int i = len - 1; i >= 0; --i ) {
          if( txBuf[i] == IAC ) {
             memmove( txBuf + i + 1, txBuf + i, len - i);
             ++len;
-         } else if( txBuf[i] == CR && settings.telnet == REAL_TELNET ) {
+         } else if( txBuf[i] == CR && sessionTelnetType == REAL_TELNET ) {
             memmove( txBuf + i + 1, txBuf + i, len - 1);
             txBuf[i + 1] = NUL;
             ++len;
@@ -113,7 +113,7 @@ int receiveTcpData() {
    int rxByte = tcpClient.read();
    ++bytesIn;
 
-   if( settings.telnet != NO_TELNET && rxByte == IAC ) {
+   if( sessionTelnetType != NO_TELNET && rxByte == IAC ) {
       rxByte = tcpClient.read();
       ++bytesIn;
       if( rxByte != IAC ) { // 2 times 0xff is just an escaped real 0xff
@@ -216,7 +216,7 @@ int receiveTcpData() {
    }
    // Telnet sends <CR> as <CR><NUL>
    // We filter out that <NUL> here
-   if( lastc == CR && (char)rxByte == 0 && settings.telnet == REAL_TELNET ) {
+   if( lastc == CR && (char)rxByte == 0 && sessionTelnetType == REAL_TELNET ) {
       rxByte = -1;
    }
    lastc = (char)rxByte;
@@ -303,6 +303,9 @@ void sendResult(int resultCode) {
                break;
          }
       }
+   }
+   if( resultCode == R_NO_CARRIER || resultCode == R_NO_ANSWER ) {
+      sessionTelnetType = settings.telnet;
    }
 }
 
