@@ -33,7 +33,7 @@ char *factoryDefaults(char *atCmd) {
    settings.quiet = false;
 
    strcpy(settings.alias[0], "particles");
-   strcpy(settings.speedDial[0], "particlesbbs.dyndns.org:6400");
+   strcpy(settings.speedDial[0], "+particlesbbs.dyndns.org:6400");
    strcpy(settings.alias[1], "altair");
    strcpy(settings.speedDial[1], "altair.virtualaltair.com:4667");
    strcpy(settings.alias[2], "heatwave");
