@@ -304,7 +304,7 @@ char *doLocation(char *atCmd) {
       case '?':
          ++atCmd;
          Serial.println(settings.location);
-         if( atCmd[0] ) {
+         if( !atCmd[0] ) {
             sendResult(R_OK);
          }
          break;
