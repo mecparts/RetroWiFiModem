@@ -1,0 +1,8 @@
+case/*.gcode
+case/dimention_test.scad
+case/pcb_test.*
+case/dimension_test.scad
+kicad/*bak
+kicad/*.svg
+kicad/RetroWiFiModem_rotated.kicad_pcb
+telnet.txt
