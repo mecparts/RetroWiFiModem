@@ -166,7 +166,7 @@ char *dialNumber(char *atCmd) {
       Serial.flush();
    }
    delay(2000);   // delay for ZMP to be able to detect CONNECT
-   if( tcpClient.connect(host, portNum) ) {
+   if( !Serial.available() && tcpClient.connect(host, portNum) ) {
       connectTime = millis();
       sendResult(R_CONNECT);
       digitalWrite(DCD, ACTIVE);
