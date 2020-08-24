@@ -45,6 +45,8 @@ mini](https://docs.wemos.cc/en/latest/d1/d1_mini.html). A MAX3232 took
 care of the 3.3V <-> RS-232 level shifting, and a 74HCT245 was used to
 drive the indicator LEDs.
 
+![Prototype](images/Prototype.jpg "Prototype")
+
 The only major addition to the hardware during development was an OR
 gate on the serial output from the ESP8266. On startup, the ESP8266
 sends out some debug information (at an oddball baud rate) through the
