@@ -29,9 +29,9 @@ LIBS:atmel
 LIBS:contrib
 LIBS:valves
 LIBS:wemos_mini
-LIBS:RetroWiFiModem
+LIBS:RetroWiFiModem-kicad4
 LIBS:diy_rcl
-LIBS:RetroWiFiModem-cache
+LIBS:RetroWiFiModem-kicad4-cache
 EELAYER 25 0
 EELAYER END
 $Descr USLetter 11000 8500

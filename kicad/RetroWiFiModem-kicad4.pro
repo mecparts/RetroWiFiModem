@@ -69,5 +69,5 @@ LibName27=atmel
 LibName28=contrib
 LibName29=valves
 LibName30=wemos_mini
-LibName31=RetroWiFiModem
+LibName31=RetroWiFiModem-kicad4
 LibName32=diy_rcl

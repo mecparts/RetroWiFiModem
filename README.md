@@ -108,7 +108,7 @@ let the magic smoke out and have an ex-modem on your hands.
 
 On the off chance that there's someone else out there with a well
 stocked parts box and a burning desire to put together their own WiFi
-modem, there's a [BOM](kicad/RetroWiFiModem-bom.csv) in the kicad
+modem, there's a [BOM](kicad/RetroWiFiModem-kicad4-bom.csv) in the kicad
 sub directory. If you actually had to go out and buy all the parts, it
 really wouldn't be cost effective.
 

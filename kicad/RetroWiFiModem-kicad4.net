@@ -1,6 +1,6 @@
 (export (version D)
   (design
-    (source /home/pi/Documents/sketchbook/ESP8266/RetroWiFiModem/kicad/RetroWiFiModem.sch)
+    (source /home/pi/Documents/sketchbook/ESP8266/RetroWiFiModem/kicad/RetroWiFiModem-kicad4.sch)
     (date "Tue 24 Mar 2020 04:50:42 PM MDT")
     (tool "Eeschema 4.0.5+dfsg1-4")
     (sheet (number 1) (name /) (tstamps /)
@@ -9,7 +9,7 @@
         (company)
         (rev 1.0)
         (date 2020-02-21)
-        (source RetroWiFiModem.sch)
+        (source RetroWiFiModem-kicad4.sch)
         (comment (number 1) (value ""))
         (comment (number 2) (value ""))
         (comment (number 3) (value ""))
@@ -222,7 +222,7 @@
       (value 74HCT245)
       (footprint Housings_DIP:DIP-20_W7.62mm)
       (datasheet http://www.ti.com/lit/ds/symlink/sn74act245.pdf)
-      (libsource (lib RetroWiFiModem) (part 74ACT245))
+      (libsource (lib RetroWiFiModem-kicad4) (part 74ACT245))
       (sheetpath (names /) (tstamps /))
       (tstamp 5E517BB5))
     (comp (ref C8)
@@ -239,7 +239,7 @@
       (sheetpath (names /) (tstamps /))
       (tstamp 5E71A7E2)))
   (libparts
-    (libpart (lib RetroWiFiModem) (part 74ACT245)
+    (libpart (lib RetroWiFiModem-kicad4) (part 74ACT245)
       (aliases
         (alias 74HCT245))
       (fields
@@ -421,8 +421,8 @@
         (pin (num 15) (name D8) (type BiDi))
         (pin (num 16) (name 3.3V) (type power_out)))))
   (libraries
-    (library (logical RetroWiFiModem)
-      (uri /home/pi/Documents/sketchbook/ESP8266/RetroWiFiModem/kicad/RetroWiFiModem.lib))
+    (library (logical RetroWiFiModem-kicad4)
+      (uri /home/pi/Documents/sketchbook/ESP8266/RetroWiFiModem/kicad/RetroWiFiModem-kicad4.lib))
     (library (logical device)
       (uri /usr/share/kicad/library/device.lib))
     (library (logical conn)
