@@ -1,0 +1,14 @@
+# export files for BOM
+*.csv
+*.tsv
+*.xml
+# backup files
+*.bak
+*.bck
+#
+fp-info-cache
+*.zip
+*.7z
+output
+gerber
+rescue-backup
