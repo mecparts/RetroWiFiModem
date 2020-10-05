@@ -318,6 +318,7 @@ void endCall() {
    sendResult(R_NO_CARRIER);
    connectTime = 0;
    digitalWrite(DCD, !ACTIVE);
+   escCount = 0;
 }
 
 //
