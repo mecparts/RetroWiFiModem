@@ -303,7 +303,10 @@ void sendResult(int resultCode) {
                break;
          }
       }
-   }
+   } else if( resultCode == R_ERROR ) {
+      lastCmd[0] = NUL;
+      memset(atCmd, 0, sizeof atCmd);
+	}
    if( resultCode == R_NO_CARRIER || resultCode == R_NO_ANSWER ) {
       sessionTelnetType = settings.telnet;
    }
