@@ -89,7 +89,7 @@ void sendSerialData() {
             memmove( txBuf + i + 1, txBuf + i, len - i);
             ++len;
          } else if( txBuf[i] == CR && sessionTelnetType == REAL_TELNET ) {
-            memmove( txBuf + i + 1, txBuf + i, len - 1);
+            memmove( txBuf + i + 1, txBuf + i, len - i);
             txBuf[i + 1] = NUL;
             ++len;
          }
