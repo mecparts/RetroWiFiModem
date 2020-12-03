@@ -64,6 +64,43 @@ the first complete unit and while I don't expect the hardware to change
 tweaking and adding to that for some time to come. However, it's
 completely usable at the moment.
 
+### Linux, Telnet, Zmodem and downloading binary files
+
+Have you used the modem to 'dial' into a Linux box? And have you done a
+`sz binary_file` on the Linux box? And at a completely reproducible
+point in the file, has the connection dropped? But other binary files
+work just fine? Then read on.
+
+This drove me slightly batty for months. I finally narrowed it down to
+trying to send blocks of binary data with a large number of FF bytes. I
+eventually created a test file consisting of 2K of FF and used that to
+test with. I could download it through the modem with Xmodem just fine.
+Ymodem also worked if I kept the block size down to 128 bytes - but the
+connection would drop instantly if I tried sending 1K blocks. Same thing
+with Zmodem.
+
+In fact, if I just tried `cat binary_file`, the connection would
+drop. Which eventually got me thinking. Sitting at the console on my
+main Linux box, I telnet'd to the same box and logged in. No WiFi modem
+involved anywhere, just a telnet session on the console to the same box.
+I then did a `cat binary_file`. The telnet connection dropped, and I
+was back in my original session.
+
+It's the Linux telnet daemon. Not the modem at all.
+
+To prove it to myself, I hooked up WiFi modems to two systems on their
+serial ports and had one dial into the other. I could send the all FF
+binary file back and forth with Zmodem and Ymodem, no trouble at all.
+
+But you really, really need to download that binary file through the
+modem from a telnet connection to a Linux box? You're not going to be
+able to use Zmodem. Ymodem will work (the sy command defaults to 128
+byte blocks), as will Xmodem. But not Zmodem.
+
+Oddly enough, the telnet daemon has no trouble *receiving* the all FF
+binary file. Only sending it. Your guess as to why is probably better
+than mine.
+
 ## The Hardware
 
 ![Interior](images/Interior.jpg "Interior")
