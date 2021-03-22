@@ -6,3 +6,4 @@ kicad/*bak
 kicad/*.svg
 kicad/RetroWiFiModem_rotated.kicad_pcb
 telnet.txt
+RetroWiFiModem/*.gch

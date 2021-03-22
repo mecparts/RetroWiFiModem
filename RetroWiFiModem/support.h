@@ -173,9 +173,20 @@ int receiveTcpData() {
                }
                break;
             case WILL:
-               // Server wants to do any option, allow it
+               // Server wants to do option, allow most
                bytesOut += tcpClient.write(IAC);
-               bytesOut += tcpClient.write(DO);
+               switch( cmdByte2 ) {
+                  case LINEMODE:
+                  case NAWS:
+                  case LFLOW:
+                  case NEW_ENVIRON:
+                  case XDISPLOC:
+                     bytesOut += tcpClient.write(DONT);
+                     break;
+                  default:
+                     bytesOut += tcpClient.write(DO);
+                     break;
+               }
                bytesOut += tcpClient.write(cmdByte2);
                break;
             case SB:
@@ -306,7 +317,7 @@ void sendResult(int resultCode) {
    } else if( resultCode == R_ERROR ) {
       lastCmd[0] = NUL;
       memset(atCmd, 0, sizeof atCmd);
-	}
+   }
    if( resultCode == R_NO_CARRIER || resultCode == R_NO_ANSWER ) {
       sessionTelnetType = settings.telnet;
    }
