@@ -285,30 +285,98 @@ char *hangup(char *atCmd) {
 }
 
 //
-// AT? help
+// AT? help: paged output, uses dual columns if defined screen width
+// is at least 80 characters, single columns if less.
 //
+// There must be an even number of help strings defined. If you end up
+// with an odd number of strings, add an empty string ("") at the end
+// to pad things out.
+//
+const char helpStr01[] PROGMEM = "Help..........: AT?";
+const char helpStr02[] PROGMEM = "Repeat command: A/";
+const char helpStr03[] PROGMEM = "Answer call...: ATA";
+const char helpStr04[] PROGMEM = "WiFi connect..: ATCn";
+const char helpStr05[] PROGMEM = "Speed dial....: ATDSn";
+const char helpStr06[] PROGMEM = "Dial host.....: ATDThost[:port]";
+const char helpStr07[] PROGMEM = "Command echo..: ATEn";
+const char helpStr08[] PROGMEM = "HTTP get......: ATGEThttp://host[/page]";
+const char helpStr09[] PROGMEM = "Hang up.......: ATH";
+const char helpStr10[] PROGMEM = "Network info..: ATI";
+const char helpStr11[] PROGMEM = "Handle Telnet.: ATNETn";
+const char helpStr12[] PROGMEM = "Leave cmd mode: ATO";
+const char helpStr13[] PROGMEM = "Quiet mode....: ATQn";
+const char helpStr14[] PROGMEM = "NIST date.time: ATRD/ATRT";
+const char helpStr15[] PROGMEM = "Auto answer...: ATS0=n";
+const char helpStr16[] PROGMEM = "Verbose mode..: ATVn";
+const char helpStr17[] PROGMEM = "Extended codes: ATXn";
+const char helpStr18[] PROGMEM = "Modem reset...: ATZ";
+const char helpStr19[] PROGMEM = "Fact. defaults: AT&F";
+const char helpStr20[] PROGMEM = "Flow control..: AT&Kn";
+const char helpStr21[] PROGMEM = "Server passwd.: AT&R=server password";
+const char helpStr22[] PROGMEM = "Show settings.: AT&Vn";
+const char helpStr23[] PROGMEM = "Update NVRAM..: AT&W";
+const char helpStr24[] PROGMEM = "Set speed dial: AT&Zn=host[:port],alias";
+const char helpStr25[] PROGMEM = "Auto execute..: AT$AE=AT command";
+const char helpStr26[] PROGMEM = "Busy message..: AT$BM=busy message";
+const char helpStr27[] PROGMEM = "mDNS name.....: AT$MDNS=mDNS name";
+const char helpStr28[] PROGMEM = "WiFi password.: AT$PASS=WiFi password";
+const char helpStr29[] PROGMEM = "Serial speed..: AT$SB=n";
+const char helpStr30[] PROGMEM = "Server port...: AT$SP=n";
+const char helpStr31[] PROGMEM = "WiFi SSID.....: AT$SSID=ssid";
+const char helpStr32[] PROGMEM = "Data config...: AT$SU=dps";
+const char helpStr33[] PROGMEM = "Location......: AT$TTL=telnet location";
+const char helpStr34[] PROGMEM = "Terminal size.: AT$TTS=WxH";
+const char helpStr35[] PROGMEM = "Terminal type.: AT$TTY=terminal type";
+const char helpStr36[] PROGMEM = "Startup wait..: AT$W=n";
+const char helpStr37[] PROGMEM = "Extended codes: ATXn";
+const char helpStr38[] PROGMEM = "Modem reset...: ATZ";
+const char helpStr39[] PROGMEM = "";
+const char helpStr40[] PROGMEM = "";
+const char helpStr41[] PROGMEM = "Query most commands followed by '?'";
+const char helpStr42[] PROGMEM = "e.g. ATQ?, AT&K?, AT$SSID?";
+
+const char* const helpStrs[] PROGMEM = {
+	helpStr01, helpStr02, helpStr03, helpStr04, helpStr05, helpStr06,
+	helpStr07, helpStr08, helpStr09, helpStr10, helpStr11, helpStr12,
+	helpStr13, helpStr14, helpStr15, helpStr16, helpStr17, helpStr18,
+	helpStr19, helpStr20, helpStr21, helpStr22, helpStr23, helpStr24,
+	helpStr25, helpStr26, helpStr27, helpStr28, helpStr29, helpStr30,
+	helpStr31, helpStr32, helpStr33, helpStr34, helpStr35, helpStr36,
+	helpStr37, helpStr38, helpStr39, helpStr40, helpStr41, helpStr42
+};
+#define NUM_HELP_STRS (sizeof(helpStrs) / sizeof(helpStrs[0]))
+
 char *showHelp(char *atCmd) {
-   Serial.println(F("AT Command Summary:"));  yield();
-   Serial.println(F("Help..........: AT?                     Server passwd.: AT&R=server password")); yield();
-   Serial.println(F("Repeat command: A/                      Show settings.: AT&Vn")); yield();
-   Serial.println(F("Answer call...: ATA                     Update NVRAM..: AT&W")); yield();
-   Serial.println(F("WiFi connect..: ATCn                    Set speed dial: AT&Zn=host[:port],alias")); yield();
-   Serial.println(F("Speed dial....: ATDSn                   Auto execute..: AT$AE=AT command")); yield();
-   Serial.println(F("Dial host.....: ATDThost[:port]         Busy message..: AT$BM=busy message")); yield();
-   Serial.println(F("Command echo..: ATEn                    mDNS name.....: AT$MDNS=mDNS name")); yield();
-   Serial.println(F("HTTP get......: ATGEThttp://host[/page] WiFi password.: AT$PASS=WiFi password")); yield();
-   Serial.println(F("Hang up.......: ATH                     Serial speed..: AT$SB=n")); yield();
-   Serial.println(F("Network info..: ATI                     Server port...: AT$SP=n")); yield();
-   Serial.println(F("Handle Telnet.: ATNETn                  WiFi SSID.....: AT$SSID=ssid")); yield();
-   Serial.println(F("Leave cmd mode: ATO                     Data config...: AT$SU=dps")); yield();
-   Serial.println(F("Quiet mode....: ATQn                    Location......: AT$TTL=telnet location")); yield();
-   Serial.println(F("NIST date.time: ATRD/ATRT               Terminal size.: AT$TTS=WxH")); yield();
-   Serial.println(F("Auto answer...: ATS0=n                  Terminal type.: AT$TTY=terminal type")); yield();
-   Serial.println(F("Verbose mode..: ATVn                    Startup wait..: AT$W=n")); yield();
-   Serial.println(F("Extended codes: ATXn")); yield();
-   Serial.println(F("Modem reset...: ATZ")); yield();
-   Serial.println(F("Fact. defaults: AT&F                    Query most commands followed by '?'")); yield();
-   Serial.println(F("Flow control..: AT&Kn                   e.g. ATQ?, AT&K?, AT$SSID?")); yield();
+	char helpLine[80], helpLine1[80], helpLine2[80];
+
+   PagedOut(F("AT Command Summary:"), true);
+   if( settings.width >= 80 ) {
+		// dual columns
+		for( int i=0; i<NUM_HELP_STRS/2; ++i ) {
+			strncpy_P(helpLine1, helpStrs[i], (sizeof helpLine1)-1);
+			helpLine[(sizeof helpLine1)-1] = 0;
+			strncpy_P(helpLine2, helpStrs[i+NUM_HELP_STRS/2], sizeof helpLine2);
+			helpLine[(sizeof helpLine2)-1] = 0;
+			snprintf(
+				helpLine,
+				sizeof helpLine,
+				"%-40s%s",
+				helpLine1,
+				helpLine2);
+			if( PagedOut(helpLine) ) {
+				break;				// user responded with ^C, quit
+			}
+		}
+	} else {
+		// single column
+		for( int i=0; i<NUM_HELP_STRS; ++i ) {
+			strncpy_P(helpLine,helpStrs[i], (sizeof helpLine)-1);
+			helpLine[(sizeof helpLine)-1] = 0;
+			if( PagedOut(helpLine) ) {
+				break;				// user responded with ^C, quit
+			}
+		}
+	}
    if( !atCmd[0] ) {
       sendResult(R_OK);
    }
@@ -319,57 +387,79 @@ char *showHelp(char *atCmd) {
 // ATI: show network info
 //
 char *showNetworkInfo(char *atCmd) {
-   Serial.println(F("Retro WiFi modem")); yield();
-   Serial.println("Build......: " __DATE__ " " __TIME__); yield();
-   Serial.printf("Baud.......: %lu\r\n", settings.serialSpeed); yield();
-   Serial.print(F("WiFi status: "));
-   switch( WiFi.status() ) {
-      case WL_CONNECTED:
-         Serial.println(F("CONNECTED"));
-         break;
-      case WL_IDLE_STATUS:
-         Serial.println(F("OFFLINE"));
-         break;
-      case WL_CONNECT_FAILED:
-         Serial.println(F("CONNECT FAILED"));
-         break;
-      case WL_NO_SSID_AVAIL:
-         Serial.println(F("SSID UNAVAILABLE"));
-         break;
-      case WL_CONNECTION_LOST:
-         Serial.println(F("CONNECTION LOST"));
-         break;
-      case WL_DISCONNECTED:
-         Serial.println(F("DISCONNECTED"));
-         break;
-      case WL_SCAN_COMPLETED:
-         Serial.println(F("SCAN COMPLETED"));
-         break;
-      default:
-         Serial.printf("UNKNOWN (%u)\r\n", WiFi.status());
-         break;
-   }
-   yield();
-   Serial.printf("SSID.......: %s\r\n", WiFi.SSID().c_str()); yield();
-   Serial.printf("MAC address: %s\r\n", WiFi.macAddress().c_str()); yield();
-   Serial.printf("IP address.: %s\r\n", WiFi.localIP().toString().c_str()); yield();
-   Serial.printf("Gateway....: %s\r\n", WiFi.gatewayIP().toString().c_str()); yield();
-   Serial.printf("Subnet mask: %s\r\n", WiFi.subnetMask().toString().c_str()); yield();
-   Serial.printf("mDNS name..: %s.local\r\n", settings.mdnsName); yield();
-   Serial.printf("Server port: %u\r\n", settings.listenPort); yield();
-   Serial.printf("Bytes in...: %lu\r\n", bytesIn); yield();
-   Serial.printf("Bytes out..: %lu\r\n", bytesOut); yield();
-   Serial.printf("Heap free..: %lu\r\n", ESP.getFreeHeap()); yield();
-   Serial.printf("Sketch size: %lu\r\n", ESP.getSketchSize()); yield();
-   Serial.printf("Sketch free: %lu\r\n", ESP.getFreeSketchSpace() % (1024L * 1024L)); yield();
-   Serial.print(F("Call status: "));
-   if( tcpClient.connected() ) {
-      Serial.printf("CONNECTED TO %s\r\n", tcpClient.remoteIP().toString().c_str());
-      Serial.printf("Call length: %s\r\n", connectTimeString());
-   } else {
-      Serial.println(F("NOT CONNECTED"));
-   }
-   yield();
+   char infoLine[80];
+   size_t maxCatChars;
+
+	do {		// a Q&D hack to allow ^C to terminate the output at the
+		      // end of a page
+		if( PagedOut(F("Retro WiFi modem"), true) ) break;
+		if( PagedOut("Build......: " __DATE__ " " __TIME__) ) break;
+		snprintf_P(infoLine, sizeof infoLine, PSTR("Baud.......: %lu"), settings.serialSpeed);
+		if( PagedOut(infoLine) ) break;
+		strncpy_P(infoLine, PSTR("WiFi status: "), (sizeof infoLine)-1);
+		infoLine[(sizeof infoLine)-1] = 0;
+		maxCatChars = (sizeof infoLine) - strlen(infoLine);
+		switch( WiFi.status() ) {
+			case WL_CONNECTED:
+				strncat_P(infoLine, PSTR("CONNECTED"), maxCatChars);
+				break;
+			case WL_IDLE_STATUS:
+				strncat_P(infoLine, PSTR("OFFLINE"), maxCatChars);
+				break;
+			case WL_CONNECT_FAILED:
+				strncat_P(infoLine, PSTR("CONNECT FAILED"), maxCatChars);
+				break;
+			case WL_NO_SSID_AVAIL:
+				strncat_P(infoLine, PSTR("SSID UNAVAILABLE"), maxCatChars);
+				break;
+			case WL_CONNECTION_LOST:
+				strncat_P(infoLine, PSTR("CONNECTION LOST"), maxCatChars);
+				break;
+			case WL_DISCONNECTED:
+				strncat_P(infoLine, PSTR("DISCONNECTED"), maxCatChars);
+				break;
+			case WL_SCAN_COMPLETED:
+				strncat_P(infoLine, PSTR("SCAN COMPLETED"), maxCatChars);
+				break;
+			default:
+				snprintf_P(infoLine, sizeof infoLine, PSTR("WiFi status: UNKNOWN (%u)"), WiFi.status());
+				break;
+		}
+		infoLine[(sizeof infoLine)-1] = 0;
+		if( PagedOut(infoLine) ) break;
+		snprintf_P(infoLine, sizeof infoLine, PSTR("SSID.......: %s"), WiFi.SSID().c_str());
+		if( PagedOut(infoLine) ) break;
+		snprintf_P(infoLine, sizeof infoLine, PSTR("MAC address: %s"), WiFi.macAddress().c_str());
+		if( PagedOut(infoLine) ) break;
+		snprintf_P(infoLine, sizeof infoLine, PSTR("IP address.: %s"), WiFi.localIP().toString().c_str());
+		if( PagedOut(infoLine) ) break;
+		snprintf_P(infoLine, sizeof infoLine, PSTR("Gateway....: %s"), WiFi.gatewayIP().toString().c_str());
+		if( PagedOut(infoLine) ) break;
+		snprintf_P(infoLine, sizeof infoLine, PSTR("Subnet mask: %s"), WiFi.subnetMask().toString().c_str());
+		if( PagedOut(infoLine) ) break;
+		snprintf_P(infoLine, sizeof infoLine, PSTR("mDNS name..: %s.local"), settings.mdnsName);
+		if( PagedOut(infoLine) ) break;
+		snprintf_P(infoLine, sizeof infoLine, PSTR("Server port: %u"), settings.listenPort);
+		if( PagedOut(infoLine) ) break;
+		snprintf_P(infoLine, sizeof infoLine, PSTR("Bytes in...: %lu"), bytesIn);
+		if( PagedOut(infoLine) ) break;
+		snprintf_P(infoLine, sizeof infoLine, PSTR("Bytes out..: %lu"), bytesOut);
+		if( PagedOut(infoLine) ) break;
+		snprintf_P(infoLine, sizeof infoLine, PSTR("Heap free..: %lu"), ESP.getFreeHeap());
+		if( PagedOut(infoLine) ) break;
+		snprintf_P(infoLine, sizeof infoLine, PSTR("Sketch size: %lu"), ESP.getSketchSize());
+		if( PagedOut(infoLine) ) break;
+		snprintf_P(infoLine, sizeof infoLine, PSTR("Sketch free: %lu"), ESP.getFreeSketchSpace() % (1024L * 1024L));
+		if( PagedOut(infoLine) ) break;
+		if( tcpClient.connected() ) {
+			snprintf_P(infoLine, sizeof infoLine, PSTR("Call status: CONNECTED TO %s"), tcpClient.remoteIP().toString().c_str());
+			if( PagedOut(infoLine) ) break;
+			snprintf_P(infoLine, sizeof infoLine, PSTR("Call length: %s"), connectTimeString());
+			if( PagedOut(infoLine) ) break;
+		} else {
+			if( PagedOut(F("Call status: NOT CONNECTED")) ) break;
+		}
+	} while( false );
    if( !atCmd[0] ) {
       sendResult(R_OK);
    }

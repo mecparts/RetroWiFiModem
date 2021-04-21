@@ -721,3 +721,42 @@ void inPasswordMode() {
    }
 }
 
+//
+// Paged text output: using the terminal rows defined in
+// settings.height, these routines pause the output when
+// a screen full of text has been shown.
+//
+// Call with PagedOut("text", true); to initialise the
+// line counter.
+//
+static uint8_t numLines = 0;
+
+static bool PagedOut(const char *str, bool reset=false) {
+	char c = ' ';
+
+	if( reset ) {
+		numLines = 0;
+	}
+	if( numLines >= settings.height-1 ) {
+		Serial.print(F("[More]"));
+		while( !Serial.available() );
+		c = Serial.read();
+		Serial.print(F("\r      \r"));
+		numLines = 0;
+	}
+	if( c != CTLC ) {
+		Serial.println(str);
+		yield();
+		++numLines;
+	}
+	return c == CTLC;
+}
+
+static bool PagedOut(const __FlashStringHelper *flashStr, bool reset=false) {
+	char str[80];
+
+	strncpy_P(str, (PGM_P)flashStr, sizeof str);
+	str[(sizeof str)-1] = 0;
+	return PagedOut(str, reset);
+}
+

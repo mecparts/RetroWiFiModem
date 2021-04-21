@@ -30,11 +30,12 @@
    #define MAX_TERMINAL_LEN      80
    #define MAX_LOCATION_LEN      80
 
-   #define NUL '\x00'
-   #define BS  '\x08'
-   #define LF  '\x0A'
-   #define CR  '\x0D'
-   #define DEL '\x7F'
+   #define NUL  '\x00'
+   #define CTLC '\x03'
+   #define BS   '\x08'
+   #define LF   '\x0A'
+   #define CR   '\x0D'
+   #define DEL  '\x7F'
 
    #define NO_TELNET   ((uint8_t)0)
    #define REAL_TELNET ((uint8_t)1)
