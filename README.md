@@ -117,16 +117,20 @@ I decided not to. Maybe next time.
 
 ## The case
 
-Like I said as the start, I would have loved to have used an old Hayes
+Like I said at the start, I would have loved to have used an old Hayes
 Smartmodem case, but they were metal and wouldn't have allowed the WiFi
 to work particularly well.
 
-In the end I went with a Hammond 1593N case (DigiKey part # HM963-ND or
-HM964-ND depending on whether you like black or grey). STL and OpenSCAD
+In the end I went with a Hammond 1593N case (DigiKey part #
+[HM963-ND](https://www.digikey.com/en/products/detail/hammond-manufacturing/1593NBK/1090774)
+or [HM964-ND](https://www.digikey.com/en/products/detail/hammond-manufacturing/1593NGY/1090775)
+depending on whether you like black or grey). STL and OpenSCAD
 files are included for the front and back panels. You could use the
-proper Hammond red panel for the front (DigiKey part # HM965-ND), *but*
-they're only available in 10 packs and their price is highway robbery.
-I ended up using a slightly smaller red panel (DigiKey part # HM889-ND)
+proper Hammond red panel for the front (DigiKey part #
+[HM965-ND](https://www.digikey.com/en/products/detail/hammond-manufacturing/1593NIR10/1090776)),
+*but* they're only available in 10 packs and their price is highway robbery.
+I ended up using a slightly smaller red panel (DigiKey part #
+[HM889-ND](https://www.digikey.com/en/products/detail/hammond-manufacturing/1593SIR10/409899))
 that was much cheaper and available in single units.
 
 ## The PCB
