@@ -163,7 +163,7 @@ char *updateNvram(char *atCmd) {
 //
 char *doSpeedDialSlot(char *atCmd) {
    int slot;
-   
+
    if( isDigit(atCmd[0]) ) {
       slot = atCmd[0] - '0';
       ++atCmd;

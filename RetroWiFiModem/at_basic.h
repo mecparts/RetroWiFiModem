@@ -40,21 +40,21 @@ char *wifiConnection(char *atCmd) {
       case '1':
          ++atCmd;
          if( settings.ssid[0] && settings.wifiPassword[0] ) {
-            if( settings.extendedCodes ) {
+            if( !settings.quiet && settings.extendedCodes ) {
                Serial.print(F("CONNECTING TO SSID "));
                Serial.print(settings.ssid);
             }
             WiFi.begin(settings.ssid, settings.wifiPassword);
             for( int i = 0; i < 50; ++i ) {
                delay(500);
-               if( settings.extendedCodes ) {
+               if( !settings.quiet && settings.extendedCodes ) {
                   Serial.print('.');
                }
                if( WiFi.status() == WL_CONNECTED ) {
                   break;
                }
             }
-            if( settings.extendedCodes ) {
+            if( !settings.quiet && settings.extendedCodes ) {
                Serial.println();
             }
             if( WiFi.status() != WL_CONNECTED ) {
@@ -62,7 +62,7 @@ char *wifiConnection(char *atCmd) {
             } else {
                digitalWrite(DSR, ACTIVE);  // modem is ready
                yield();
-               if( settings.extendedCodes ) {
+               if( !settings.quiet && settings.extendedCodes ) {
                   Serial.printf("CONNECTED TO %s IP ADDRESS: %s\r\n",
                      settings.ssid, WiFi.localIP().toString().c_str());
                }
@@ -71,7 +71,7 @@ char *wifiConnection(char *atCmd) {
                }
             }
          } else {
-            if( settings.extendedCodes ) {
+            if( !settings.quiet && settings.extendedCodes ) {
                Serial.println(F("Congigure SSID and password. Type AT? for help."));
             }
             sendResult(R_ERROR);
@@ -161,7 +161,7 @@ char *dialNumber(char *atCmd) {
    }
 
    yield();
-   if( settings.extendedCodes ) {
+   if( !settings.quiet && settings.extendedCodes ) {
       Serial.printf("DIALLING %s:%u\r\n", host, portNum);
       Serial.flush();
    }
