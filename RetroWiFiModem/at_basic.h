@@ -328,12 +328,10 @@ const char helpStr33[] PROGMEM = "Location......: AT$TTL=telnet location";
 const char helpStr34[] PROGMEM = "Terminal size.: AT$TTS=WxH";
 const char helpStr35[] PROGMEM = "Terminal type.: AT$TTY=terminal type";
 const char helpStr36[] PROGMEM = "Startup wait..: AT$W=n";
-const char helpStr37[] PROGMEM = "Extended codes: ATXn";
-const char helpStr38[] PROGMEM = "Modem reset...: ATZ";
-const char helpStr39[] PROGMEM = "";
-const char helpStr40[] PROGMEM = "";
-const char helpStr41[] PROGMEM = "Query most commands followed by '?'";
-const char helpStr42[] PROGMEM = "e.g. ATQ?, AT&K?, AT$SSID?";
+const char helpStr37[] PROGMEM = "";
+const char helpStr38[] PROGMEM = "";
+const char helpStr39[] PROGMEM = "Query most commands followed by '?'";
+const char helpStr40[] PROGMEM = "e.g. ATQ?, AT&K?, AT$SSID?";
 
 const char* const helpStrs[] PROGMEM = {
 	helpStr01, helpStr02, helpStr03, helpStr04, helpStr05, helpStr06,
@@ -342,7 +340,7 @@ const char* const helpStrs[] PROGMEM = {
 	helpStr19, helpStr20, helpStr21, helpStr22, helpStr23, helpStr24,
 	helpStr25, helpStr26, helpStr27, helpStr28, helpStr29, helpStr30,
 	helpStr31, helpStr32, helpStr33, helpStr34, helpStr35, helpStr36,
-	helpStr37, helpStr38, helpStr39, helpStr40, helpStr41, helpStr42
+	helpStr37, helpStr38, helpStr39, helpStr40
 };
 #define NUM_HELP_STRS (sizeof(helpStrs) / sizeof(helpStrs[0]))
 
