@@ -236,6 +236,17 @@ version as I built it rather than have the modem *pull* it. So that's
 what I did. It uses the default OTA upload capability built into the
 Arduino IDE.
 
+**Jan 24/22:** It's been reported that the ESP8266 core is slightly
+snafu'd at the moment, and that it's breaking things in the modem
+software. As a workaround, I've added the bin file that gets uploaded
+to the modem in the repository. I haven't updated my ESP8266 core in
+ages; "if it isn't broken, don't break it", and everything still works
+for me. The bin file can be uploaded with the *espota.py* tool in the
+ESP8266 tool directory tree.
+
+(If TPTB have deleted/renamed/moved that tool in the current core,
+you'll have to figure out how to do a manual OTA update.)
+
 ### RTS/CTS handshaking and a dead spin loop issue
 
 Something I noticed with ESP8266 software that puzzled me was the
