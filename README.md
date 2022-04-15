@@ -353,7 +353,7 @@ than mine.
 ## References
 
 * [WiFi232 - An Internet Hayes Modem for your Retro Computer](http://biosrhythm.com/?page_id=1453)<br>
-* [WiFi232's Evil Clone](http://www.vcfed.org/forum/entry.php?740-WiFi232-s-Evil-Clone&bt=1056)<br>
+* [WiFi232's Evil Clone](https://forum.vcfed.org/index.php?threads/wifi232s-evil-clone.1070412/)<br>
 * [Jussi Salin's Virtual modem for ESP8266](https://github.com/jsalin/esp8266_modem)<br>
 * [Stardot's ESP8266 based virtual modem](https://github.com/stardot/esp8266_modem)<br>
 * [Roland Juno's ESP8266 based virtual modem](https://github.com/RolandJuno/esp8266_modem)
