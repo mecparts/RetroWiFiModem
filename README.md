@@ -172,7 +172,7 @@ network.
    * `AT$SB=speed` to set the default serial speed.
    * `AT$SU=dps` to set the data bits, parity and stop bits.
    * `ATNETn` to select whether or not to use Telnet protocol.
-   * `AT&kn` to use RTS/CTS flow control.
+   * `AT&Kn` to use RTS/CTS flow control or not.
 5. `AT&W` to save the settings.
 
 Once you've done that, the modem will automatically connect to your WiFi
