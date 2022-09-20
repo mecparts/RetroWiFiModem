@@ -72,7 +72,7 @@ char *wifiConnection(char *atCmd) {
             }
          } else {
             if( !settings.quiet && settings.extendedCodes ) {
-               Serial.println(F("Congigure SSID and password. Type AT? for help."));
+               Serial.println(F("Configure SSID and password. Type AT? for help."));
             }
             sendResult(R_ERROR);
          }
