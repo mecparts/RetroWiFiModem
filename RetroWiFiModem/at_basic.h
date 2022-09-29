@@ -6,6 +6,19 @@ char *answerCall(char *atCmd) {
    digitalWrite(RI, !ACTIVE); // we've picked up so ringing stops
    ringing = false;
    ringCount = 0;
+	if( settings.telnet != NO_TELNET ) {
+		tcpClient.write(IAC);      // incantation to switch
+		tcpClient.write(WILL);     // from line mode to
+		tcpClient.write(SUP_GA);   // character mode
+		tcpClient.write(IAC);
+		tcpClient.write(WILL);
+		tcpClient.write(ECHO);
+		tcpClient.write(IAC);
+		tcpClient.write(WONT);
+		tcpClient.write(LINEMODE);
+	}
+   sendResult(R_RING_IP);
+   delay(1000);
    connectTime = millis();
    sendResult(R_CONNECT);
    digitalWrite(DCD, ACTIVE); // we've got a carrier signal
