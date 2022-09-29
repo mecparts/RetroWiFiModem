@@ -6,17 +6,17 @@ char *answerCall(char *atCmd) {
    digitalWrite(RI, !ACTIVE); // we've picked up so ringing stops
    ringing = false;
    ringCount = 0;
-	if( settings.telnet != NO_TELNET ) {
-		tcpClient.write(IAC);      // incantation to switch
-		tcpClient.write(WILL);     // from line mode to
-		tcpClient.write(SUP_GA);   // character mode
-		tcpClient.write(IAC);
-		tcpClient.write(WILL);
-		tcpClient.write(ECHO);
-		tcpClient.write(IAC);
-		tcpClient.write(WONT);
-		tcpClient.write(LINEMODE);
-	}
+   if( settings.telnet != NO_TELNET ) {
+      tcpClient.write(IAC);      // incantation to switch
+      tcpClient.write(WILL);     // from line mode to
+      tcpClient.write(SUP_GA);   // character mode
+      tcpClient.write(IAC);
+      tcpClient.write(WILL);
+      tcpClient.write(ECHO);
+      tcpClient.write(IAC);
+      tcpClient.write(WONT);
+      tcpClient.write(LINEMODE);
+   }
    sendResult(R_RING_IP);
    delay(1000);
    connectTime = millis();
@@ -161,15 +161,15 @@ char *dialNumber(char *atCmd) {
    switch( host[0] ) {
       case '-':
          ++host;
-			sessionTelnetType = NO_TELNET;
+         sessionTelnetType = NO_TELNET;
          break;
       case '=':
          ++host;
-			sessionTelnetType = REAL_TELNET;
+         sessionTelnetType = REAL_TELNET;
          break;
       case '+':
          ++host;
-			sessionTelnetType = FAKE_TELNET;
+         sessionTelnetType = FAKE_TELNET;
          break;
    }
 
@@ -347,47 +347,47 @@ const char helpStr39[] PROGMEM = "Query most commands followed by '?'";
 const char helpStr40[] PROGMEM = "e.g. ATQ?, AT&K?, AT$SSID?";
 
 const char* const helpStrs[] PROGMEM = {
-	helpStr01, helpStr02, helpStr03, helpStr04, helpStr05, helpStr06,
-	helpStr07, helpStr08, helpStr09, helpStr10, helpStr11, helpStr12,
-	helpStr13, helpStr14, helpStr15, helpStr16, helpStr17, helpStr18,
-	helpStr19, helpStr20, helpStr21, helpStr22, helpStr23, helpStr24,
-	helpStr25, helpStr26, helpStr27, helpStr28, helpStr29, helpStr30,
-	helpStr31, helpStr32, helpStr33, helpStr34, helpStr35, helpStr36,
-	helpStr37, helpStr38, helpStr39, helpStr40
+   helpStr01, helpStr02, helpStr03, helpStr04, helpStr05, helpStr06,
+   helpStr07, helpStr08, helpStr09, helpStr10, helpStr11, helpStr12,
+   helpStr13, helpStr14, helpStr15, helpStr16, helpStr17, helpStr18,
+   helpStr19, helpStr20, helpStr21, helpStr22, helpStr23, helpStr24,
+   helpStr25, helpStr26, helpStr27, helpStr28, helpStr29, helpStr30,
+   helpStr31, helpStr32, helpStr33, helpStr34, helpStr35, helpStr36,
+   helpStr37, helpStr38, helpStr39, helpStr40
 };
 #define NUM_HELP_STRS (sizeof(helpStrs) / sizeof(helpStrs[0]))
 
 char *showHelp(char *atCmd) {
-	char helpLine[80], helpLine1[80], helpLine2[80];
+   char helpLine[80], helpLine1[80], helpLine2[80];
 
    PagedOut(F("AT Command Summary:"), true);
    if( settings.width >= 80 ) {
-		// dual columns
-		for( int i=0; i<NUM_HELP_STRS/2; ++i ) {
-			strncpy_P(helpLine1, helpStrs[i], (sizeof helpLine1)-1);
-			helpLine[(sizeof helpLine1)-1] = 0;
-			strncpy_P(helpLine2, helpStrs[i+NUM_HELP_STRS/2], sizeof helpLine2);
-			helpLine[(sizeof helpLine2)-1] = 0;
-			snprintf(
-				helpLine,
-				sizeof helpLine,
-				"%-40s%s",
-				helpLine1,
-				helpLine2);
-			if( PagedOut(helpLine) ) {
-				break;				// user responded with ^C, quit
-			}
-		}
-	} else {
-		// single column
-		for( int i=0; i<NUM_HELP_STRS; ++i ) {
-			strncpy_P(helpLine,helpStrs[i], (sizeof helpLine)-1);
-			helpLine[(sizeof helpLine)-1] = 0;
-			if( PagedOut(helpLine) ) {
-				break;				// user responded with ^C, quit
-			}
-		}
-	}
+      // dual columns
+      for( int i=0; i<NUM_HELP_STRS/2; ++i ) {
+         strncpy_P(helpLine1, helpStrs[i], (sizeof helpLine1)-1);
+         helpLine[(sizeof helpLine1)-1] = 0;
+         strncpy_P(helpLine2, helpStrs[i+NUM_HELP_STRS/2], sizeof helpLine2);
+         helpLine[(sizeof helpLine2)-1] = 0;
+         snprintf(
+            helpLine,
+            sizeof helpLine,
+            "%-40s%s",
+            helpLine1,
+            helpLine2);
+         if( PagedOut(helpLine) ) {
+            break;            // user responded with ^C, quit
+         }
+      }
+   } else {
+      // single column
+      for( int i=0; i<NUM_HELP_STRS; ++i ) {
+         strncpy_P(helpLine,helpStrs[i], (sizeof helpLine)-1);
+         helpLine[(sizeof helpLine)-1] = 0;
+         if( PagedOut(helpLine) ) {
+            break;            // user responded with ^C, quit
+         }
+      }
+   }
    if( !atCmd[0] ) {
       sendResult(R_OK);
    }
@@ -401,76 +401,76 @@ char *showNetworkInfo(char *atCmd) {
    char infoLine[80];
    size_t maxCatChars;
 
-	do {		// a Q&D hack to allow ^C to terminate the output at the
-		      // end of a page
-		if( PagedOut(F("Retro WiFi modem"), true) ) break;
-		if( PagedOut("Build......: " __DATE__ " " __TIME__) ) break;
-		snprintf_P(infoLine, sizeof infoLine, PSTR("Baud.......: %lu"), settings.serialSpeed);
-		if( PagedOut(infoLine) ) break;
-		strncpy_P(infoLine, PSTR("WiFi status: "), (sizeof infoLine)-1);
-		infoLine[(sizeof infoLine)-1] = 0;
-		maxCatChars = (sizeof infoLine) - strlen(infoLine);
-		switch( WiFi.status() ) {
-			case WL_CONNECTED:
-				strncat_P(infoLine, PSTR("CONNECTED"), maxCatChars);
-				break;
-			case WL_IDLE_STATUS:
-				strncat_P(infoLine, PSTR("OFFLINE"), maxCatChars);
-				break;
-			case WL_CONNECT_FAILED:
-				strncat_P(infoLine, PSTR("CONNECT FAILED"), maxCatChars);
-				break;
-			case WL_NO_SSID_AVAIL:
-				strncat_P(infoLine, PSTR("SSID UNAVAILABLE"), maxCatChars);
-				break;
-			case WL_CONNECTION_LOST:
-				strncat_P(infoLine, PSTR("CONNECTION LOST"), maxCatChars);
-				break;
-			case WL_DISCONNECTED:
-				strncat_P(infoLine, PSTR("DISCONNECTED"), maxCatChars);
-				break;
-			case WL_SCAN_COMPLETED:
-				strncat_P(infoLine, PSTR("SCAN COMPLETED"), maxCatChars);
-				break;
-			default:
-				snprintf_P(infoLine, sizeof infoLine, PSTR("WiFi status: UNKNOWN (%u)"), WiFi.status());
-				break;
-		}
-		infoLine[(sizeof infoLine)-1] = 0;
-		if( PagedOut(infoLine) ) break;
-		snprintf_P(infoLine, sizeof infoLine, PSTR("SSID.......: %s"), WiFi.SSID().c_str());
-		if( PagedOut(infoLine) ) break;
-		snprintf_P(infoLine, sizeof infoLine, PSTR("MAC address: %s"), WiFi.macAddress().c_str());
-		if( PagedOut(infoLine) ) break;
-		snprintf_P(infoLine, sizeof infoLine, PSTR("IP address.: %s"), WiFi.localIP().toString().c_str());
-		if( PagedOut(infoLine) ) break;
-		snprintf_P(infoLine, sizeof infoLine, PSTR("Gateway....: %s"), WiFi.gatewayIP().toString().c_str());
-		if( PagedOut(infoLine) ) break;
-		snprintf_P(infoLine, sizeof infoLine, PSTR("Subnet mask: %s"), WiFi.subnetMask().toString().c_str());
-		if( PagedOut(infoLine) ) break;
-		snprintf_P(infoLine, sizeof infoLine, PSTR("mDNS name..: %s.local"), settings.mdnsName);
-		if( PagedOut(infoLine) ) break;
-		snprintf_P(infoLine, sizeof infoLine, PSTR("Server port: %u"), settings.listenPort);
-		if( PagedOut(infoLine) ) break;
-		snprintf_P(infoLine, sizeof infoLine, PSTR("Bytes in...: %lu"), bytesIn);
-		if( PagedOut(infoLine) ) break;
-		snprintf_P(infoLine, sizeof infoLine, PSTR("Bytes out..: %lu"), bytesOut);
-		if( PagedOut(infoLine) ) break;
-		snprintf_P(infoLine, sizeof infoLine, PSTR("Heap free..: %lu"), ESP.getFreeHeap());
-		if( PagedOut(infoLine) ) break;
-		snprintf_P(infoLine, sizeof infoLine, PSTR("Sketch size: %lu"), ESP.getSketchSize());
-		if( PagedOut(infoLine) ) break;
-		snprintf_P(infoLine, sizeof infoLine, PSTR("Sketch free: %lu"), ESP.getFreeSketchSpace() % (1024L * 1024L));
-		if( PagedOut(infoLine) ) break;
-		if( tcpClient.connected() ) {
-			snprintf_P(infoLine, sizeof infoLine, PSTR("Call status: CONNECTED TO %s"), tcpClient.remoteIP().toString().c_str());
-			if( PagedOut(infoLine) ) break;
-			snprintf_P(infoLine, sizeof infoLine, PSTR("Call length: %s"), connectTimeString());
-			if( PagedOut(infoLine) ) break;
-		} else {
-			if( PagedOut(F("Call status: NOT CONNECTED")) ) break;
-		}
-	} while( false );
+   do {      // a Q&D hack to allow ^C to terminate the output at the
+             // end of a page
+      if( PagedOut(F("Retro WiFi modem"), true) ) break;
+      if( PagedOut("Build......: " __DATE__ " " __TIME__) ) break;
+      snprintf_P(infoLine, sizeof infoLine, PSTR("Baud.......: %lu"), settings.serialSpeed);
+      if( PagedOut(infoLine) ) break;
+      strncpy_P(infoLine, PSTR("WiFi status: "), (sizeof infoLine)-1);
+      infoLine[(sizeof infoLine)-1] = 0;
+      maxCatChars = (sizeof infoLine) - strlen(infoLine);
+      switch( WiFi.status() ) {
+         case WL_CONNECTED:
+            strncat_P(infoLine, PSTR("CONNECTED"), maxCatChars);
+            break;
+         case WL_IDLE_STATUS:
+            strncat_P(infoLine, PSTR("OFFLINE"), maxCatChars);
+            break;
+         case WL_CONNECT_FAILED:
+            strncat_P(infoLine, PSTR("CONNECT FAILED"), maxCatChars);
+            break;
+         case WL_NO_SSID_AVAIL:
+            strncat_P(infoLine, PSTR("SSID UNAVAILABLE"), maxCatChars);
+            break;
+         case WL_CONNECTION_LOST:
+            strncat_P(infoLine, PSTR("CONNECTION LOST"), maxCatChars);
+            break;
+         case WL_DISCONNECTED:
+            strncat_P(infoLine, PSTR("DISCONNECTED"), maxCatChars);
+            break;
+         case WL_SCAN_COMPLETED:
+            strncat_P(infoLine, PSTR("SCAN COMPLETED"), maxCatChars);
+            break;
+         default:
+            snprintf_P(infoLine, sizeof infoLine, PSTR("WiFi status: UNKNOWN (%u)"), WiFi.status());
+            break;
+      }
+      infoLine[(sizeof infoLine)-1] = 0;
+      if( PagedOut(infoLine) ) break;
+      snprintf_P(infoLine, sizeof infoLine, PSTR("SSID.......: %s"), WiFi.SSID().c_str());
+      if( PagedOut(infoLine) ) break;
+      snprintf_P(infoLine, sizeof infoLine, PSTR("MAC address: %s"), WiFi.macAddress().c_str());
+      if( PagedOut(infoLine) ) break;
+      snprintf_P(infoLine, sizeof infoLine, PSTR("IP address.: %s"), WiFi.localIP().toString().c_str());
+      if( PagedOut(infoLine) ) break;
+      snprintf_P(infoLine, sizeof infoLine, PSTR("Gateway....: %s"), WiFi.gatewayIP().toString().c_str());
+      if( PagedOut(infoLine) ) break;
+      snprintf_P(infoLine, sizeof infoLine, PSTR("Subnet mask: %s"), WiFi.subnetMask().toString().c_str());
+      if( PagedOut(infoLine) ) break;
+      snprintf_P(infoLine, sizeof infoLine, PSTR("mDNS name..: %s.local"), settings.mdnsName);
+      if( PagedOut(infoLine) ) break;
+      snprintf_P(infoLine, sizeof infoLine, PSTR("Server port: %u"), settings.listenPort);
+      if( PagedOut(infoLine) ) break;
+      snprintf_P(infoLine, sizeof infoLine, PSTR("Bytes in...: %lu"), bytesIn);
+      if( PagedOut(infoLine) ) break;
+      snprintf_P(infoLine, sizeof infoLine, PSTR("Bytes out..: %lu"), bytesOut);
+      if( PagedOut(infoLine) ) break;
+      snprintf_P(infoLine, sizeof infoLine, PSTR("Heap free..: %lu"), ESP.getFreeHeap());
+      if( PagedOut(infoLine) ) break;
+      snprintf_P(infoLine, sizeof infoLine, PSTR("Sketch size: %lu"), ESP.getSketchSize());
+      if( PagedOut(infoLine) ) break;
+      snprintf_P(infoLine, sizeof infoLine, PSTR("Sketch free: %lu"), ESP.getFreeSketchSpace() % (1024L * 1024L));
+      if( PagedOut(infoLine) ) break;
+      if( tcpClient.connected() ) {
+         snprintf_P(infoLine, sizeof infoLine, PSTR("Call status: CONNECTED TO %s"), tcpClient.remoteIP().toString().c_str());
+         if( PagedOut(infoLine) ) break;
+         snprintf_P(infoLine, sizeof infoLine, PSTR("Call length: %s"), connectTimeString());
+         if( PagedOut(infoLine) ) break;
+      } else {
+         if( PagedOut(F("Call status: NOT CONNECTED")) ) break;
+      }
+   } while( false );
    if( !atCmd[0] ) {
       sendResult(R_OK);
    }
