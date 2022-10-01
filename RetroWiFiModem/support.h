@@ -61,8 +61,9 @@ void sendSerialData() {
    if( escCount || (millis() - lastSerialData >= GUARD_TIME) ) {
       // check for the online escape sequence
       // +++ with a 1 second pause before and after
+      // if escape character is >= 128, it's ignored
       for( size_t i = 0; i < len; ++i ) {
-         if( txBuf[i] == settings.escChar ) {
+         if( txBuf[i] == settings.escChar && settings.escChar < 128 ) {
             if( ++escCount == ESC_COUNT ) {
                guardTime = millis() + GUARD_TIME;
             } else {
@@ -607,10 +608,10 @@ void displayCurrentSettings(void) {
    Serial.printf("mDNS name..: %s.local\r\n", settings.mdnsName); yield();
    Serial.printf("Server port: %u\r\n", settings.listenPort); yield();
    Serial.printf("Busy msg...: %s\r\n", settings.busyMsg); yield();
-   Serial.printf("E%u Q%u V%u X%u &K%u NET%u S0=%u\r\n",
+   Serial.printf("E%u Q%u V%u X%u &K%u NET%u S0=%u S2=%u\r\n",
       settings.echo, settings.quiet, settings.verbose,
       settings.extendedCodes, settings.rtsCts, settings.telnet,
-      settings.autoAnswer); yield();
+      settings.autoAnswer, settings.escChar); yield();
 
    Serial.println(F("Speed dial:"));
    for( int i = 0; i < SPEED_DIAL_SLOTS; ++i ) {
@@ -642,14 +643,15 @@ void displayStoredSettings(void) {
    Serial.printf("mDNS name..: %s.local\r\n", EEPROM.get(offsetof(struct Settings, mdnsName), v_char80)); yield();
    Serial.printf("Server port: %u\r\n", EEPROM.get(offsetof(struct Settings, listenPort), v_uint16)); yield();
    Serial.printf("Busy Msg...: %s\r\n", EEPROM.get(offsetof(struct Settings, busyMsg),v_char80)); yield();
-   Serial.printf("E%u Q%u V%u X%u &K%u NET%u S0=%u\r\n",
+   Serial.printf("E%u Q%u V%u X%u &K%u NET%u S0=%u S2=%u\r\n",
       EEPROM.get(offsetof(struct Settings, echo), v_bool),
       EEPROM.get(offsetof(struct Settings, quiet), v_bool),
       EEPROM.get(offsetof(struct Settings, verbose), v_bool),
       EEPROM.get(offsetof(struct Settings, extendedCodes), v_bool),
       EEPROM.get(offsetof(struct Settings, rtsCts), v_bool),
       EEPROM.get(offsetof(struct Settings, telnet), v_bool),
-      EEPROM.get(offsetof(struct Settings, autoAnswer), v_uint8));
+      EEPROM.get(offsetof(struct Settings, autoAnswer), v_uint8),
+      EEPROM.get(offsetof(struct Settings, escChar), v_uint8));
    yield();
 
    Serial.println(F("Speed dial:"));

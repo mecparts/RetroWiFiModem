@@ -220,6 +220,9 @@ void doAtCmds(char *atCmd) {
                } else if( !strncasecmp(atCmd, "S0", 2) ) {
                   // query/set auto answer
                   atCmd = doAutoAnswerConfig(atCmd + 2);
+               } else if( !strncasecmp(atCmd, "S2", 2) ) {
+                  // query/set escape character
+                  atCmd = doEscapeCharConfig(atCmd + 2);
                } else if( !strncasecmp(atCmd, "$SP", 3) ) {
                   // query set inbound TCP port
                   atCmd = doServerPort(atCmd + 3);

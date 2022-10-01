@@ -639,6 +639,41 @@ char *doAutoAnswerConfig(char *atCmd) {
 }
 
 //
+// ATS2?  query escape character
+// ATS2=[128..255] disable escape character
+// ATS2=[0..127] set and enable escape character
+//
+char *doEscapeCharConfig(char *atCmd) {
+   switch( atCmd[0] ) {
+      case '?':
+         ++atCmd;
+         printf("%u\r\n", settings.escChar);
+         if( !atCmd[0] ) {
+            sendResult(R_OK);
+         }
+         break;
+      case '=':
+         ++atCmd;
+         if( isdigit(atCmd[0]) ) {
+            settings.escChar = atoi(atCmd);
+            while( isdigit(atCmd[0]) ) {
+               ++atCmd;
+            }
+            if( !atCmd[0] ) {
+               sendResult(R_OK);
+            }
+         } else {
+            sendResult(R_ERROR);
+         }
+         break;
+      default:
+         sendResult(R_ERROR);
+         break;
+   }
+   return atCmd;
+}
+
+//
 // ATV? query verbose mode status
 // ATV0 disable verbose mode (results are shown as numbers)
 // ATV1 enable verbose nmode (results are shown as text)
