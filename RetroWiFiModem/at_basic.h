@@ -22,6 +22,7 @@ char *answerCall(char *atCmd) {
    connectTime = millis();
    sendResult(R_CONNECT);
    digitalWrite(DCD, ACTIVE); // we've got a carrier signal
+   amClient = false;
    state = ONLINE;
    Serial.flush();
    return atCmd;
@@ -183,6 +184,7 @@ char *dialNumber(char *atCmd) {
       connectTime = millis();
       sendResult(R_CONNECT);
       digitalWrite(DCD, ACTIVE);
+      amClient = true;
       state = ONLINE;
       yield();
    } else {
@@ -267,6 +269,7 @@ char *httpGet(char *atCmd) {
       connectTime = millis();
       sendResult(R_CONNECT);
       digitalWrite(DCD, ACTIVE);
+      amClient = true;
       state = ONLINE;
 
       // Send a HTTP request before continuing the connection as usual

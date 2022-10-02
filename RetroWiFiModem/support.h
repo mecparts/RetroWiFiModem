@@ -139,9 +139,15 @@ int receiveTcpData() {
                   case SUP_GA:
                   case TTYPE:
                   case TSPEED:
-                     bytesOut += tcpClient.write(IAC);      // we will say what
-                     bytesOut += tcpClient.write(WILL);     // the terminal is
-                     bytesOut += tcpClient.write(cmdByte2);
+                     if( amClient || (cmdByte2 != SUP_GA && cmdByte2 != ECHO) ) {
+                        // in a server connection, we've already sent out
+                        // WILL SUP_GA and WILL ECHO so we shouldn't again
+                        // to prevent an endless round robin of WILLs and
+                        // DOs SUP_GA/ECHO echoing back and forth
+                        bytesOut += tcpClient.write(IAC);
+                        bytesOut += tcpClient.write(WILL);
+                        bytesOut += tcpClient.write(cmdByte2);
+                     }
                      break;
                   case LOC:
                   case NAWS:
@@ -409,6 +415,7 @@ void checkForIncomingCall() {
          } else {
             delay(1000);
             state = ONLINE;
+            amClient = false;
             sendResult(R_CONNECT);
          }
          connectTime = millis();
@@ -693,6 +700,7 @@ void inPasswordMode() {
                tcpClient.print(F("\r\nPassword: "));
             } else {
                state = ONLINE;
+               amClient = false;
                sendResult(R_CONNECT);
                tcpClient.println(F("Welcome"));
             }
