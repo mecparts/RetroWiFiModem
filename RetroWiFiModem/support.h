@@ -48,7 +48,7 @@ void inAtCommandMode() {
 // send serial data to the TCP client
 //
 void sendSerialData() {
-   static unsigned long lastSerialData = 0;
+   static uint32_t lastSerialData = 0;
    // in telnet mode, we might have to escape every single char,
    // so don't use more than half the buffer
    size_t maxBufSize = (sessionTelnetType != NO_TELNET) ? TX_BUF_SIZE / 2 : TX_BUF_SIZE;
@@ -58,12 +58,18 @@ void sendSerialData() {
    }
    Serial.readBytes(txBuf, len);
 
-   if( escCount || (millis() - lastSerialData >= GUARD_TIME) ) {
+   uint32_t serialInterval = millis() - lastSerialData;
+   // if more than 1 second since the last character,
+   // start the online escape sequence counter over again
+   if( escCount && serialInterval >= GUARD_TIME ) {
+      escCount = 0;
+   }
+   if( settings.escChar < 128 && (escCount || serialInterval >= GUARD_TIME) ) {
       // check for the online escape sequence
       // +++ with a 1 second pause before and after
       // if escape character is >= 128, it's ignored
       for( size_t i = 0; i < len; ++i ) {
-         if( txBuf[i] == settings.escChar && settings.escChar < 128 ) {
+         if( txBuf[i] == settings.escChar ) {
             if( ++escCount == ESC_COUNT ) {
                guardTime = millis() + GUARD_TIME;
             } else {
