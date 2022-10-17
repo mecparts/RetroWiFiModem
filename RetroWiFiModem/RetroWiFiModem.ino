@@ -204,7 +204,10 @@ void doAtCmds(char *atCmd) {
                } else if( !strncasecmp(atCmd, "DS", 2) && len == 3 ) {
                   // speed dial a number
                   atCmd = speedDialNumber(atCmd + 2);
-               } else if( !strncasecmp(atCmd, "H", 1) || !strncasecmp(atCmd, "H0", 2) ) {
+               } else if( !strncasecmp(atCmd, "H0", 2) ) {
+                  // hang up call
+                  atCmd = hangup(atCmd + 2);
+               } else if( !strncasecmp(atCmd, "H", 1) && !isDigit(atCmd[1]) ) {
                   // hang up call
                   atCmd = hangup(atCmd + 1);
                } else if( !strncasecmp(atCmd, "&Z", 2) && isDigit(atCmd[2]) ) {

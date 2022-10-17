@@ -504,17 +504,17 @@ SerialConfig getSerialConfig(void) {
    uint8_t serialConfig = 0;
    switch( settings.dataBits ) {
       case 5:
-         serialConfig = serialConfig = UART_NB_BIT_5 | (~UART_NB_BIT_MASK & serialConfig);
+         serialConfig = UART_NB_BIT_5 | (~UART_NB_BIT_MASK & serialConfig);
          break;
       case 6:
-         serialConfig = serialConfig = UART_NB_BIT_6 | (~UART_NB_BIT_MASK & serialConfig);
+         serialConfig = UART_NB_BIT_6 | (~UART_NB_BIT_MASK & serialConfig);
          break;
       case 7:
-         serialConfig = serialConfig = UART_NB_BIT_7 | (~UART_NB_BIT_MASK & serialConfig);
+         serialConfig = UART_NB_BIT_7 | (~UART_NB_BIT_MASK & serialConfig);
          break;
       case 8:
       default:
-         serialConfig = serialConfig = UART_NB_BIT_8 | (~UART_NB_BIT_MASK & serialConfig);
+         serialConfig = UART_NB_BIT_8 | (~UART_NB_BIT_MASK & serialConfig);
          break;
    }
    switch( settings.parity ) {
