@@ -123,7 +123,14 @@ int receiveTcpData() {
    if( sessionTelnetType != NO_TELNET && rxByte == IAC ) {
       rxByte = tcpClient.read();
       ++bytesIn;
-      if( rxByte != IAC ) { // 2 times 0xff is just an escaped real 0xff
+      if( rxByte == DM ) { // ignore data marks
+         rxByte = -1;
+      } else if( rxByte == AYT ) { // are you there?
+         bytesOut += tcpClient.print("\r\n[");
+         bytesOut += tcpClient.print(settings.mdnsName);
+         bytesOut += tcpClient.print(" : yes]\r\n");
+         rxByte = -1;
+      } else if( rxByte != IAC ) { // 2 times 0xff is just an escaped real 0xff
          // rxByte has now the first byte of the actual non-escaped control code
 #if DEBUG
          Serial.print('[');

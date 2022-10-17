@@ -26,6 +26,23 @@ char *doAutoExecute(char *atCmd) {
 }
 
 //
+// AT$AYT send "Are you there?" if in a Telnet session
+//
+char *doAreYouThere(char *atCmd) {
+
+   static const uint8_t areYouThere[] = {IAC, AYT};
+
+   if( tcpClient.connected() && settings.telnet != NO_TELNET ) {
+      state = ONLINE;
+      bytesOut += tcpClient.write(IAC);
+      bytesOut += tcpClient.write(AYT);
+   } else {
+      sendResult(R_ERROR);
+   }
+   return atCmd;
+}
+
+//
 // AT$BM?  query busy message
 // AT$BM=busy message set busy message
 //

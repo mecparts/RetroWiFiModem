@@ -181,6 +181,8 @@ void doAtCmds(char *atCmd) {
                if( !strncasecmp(atCmd, "?", 1)  ) { // help message
                   // help
                   atCmd = showHelp(atCmd + 1);
+               } else if( !strncasecmp(atCmd, "$AYT", 4) ) {
+                  atCmd = doAreYouThere(atCmd + 4);
                } else if( !strncasecmp(atCmd, "$SB", 3) ) {
                   // query/set serial speed
                   atCmd = doSpeedChange(atCmd + 3);

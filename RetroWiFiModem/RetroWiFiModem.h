@@ -56,6 +56,8 @@
    #define ECHO      ((uint8_t)1)
    #define SUP_GA    ((uint8_t)3)
    #define SE        ((uint8_t)240)
+   #define DM        ((uint8_t)242)
+   #define AYT       ((uint8_t)246)
    #define SB        ((uint8_t)250)
    #define WILL      ((uint8_t)251)
    #define WONT      ((uint8_t)252)
