@@ -5,5 +5,8 @@ case/dimension_test.scad
 kicad/*bak
 kicad/*.svg
 kicad/RetroWiFiModem_rotated.kicad_pcb
+kicad/library/*.bck
 telnet.txt
 RetroWiFiModem/*.gch
+D1 mini pinouts.txt
+sounds/*.wav

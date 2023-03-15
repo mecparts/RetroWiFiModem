@@ -1,3 +1,15 @@
+// DTR low to high interrupt handler
+ICACHE_RAM_ATTR void dtrIrq(void) {
+   dtrWentInactive = true;
+}
+
+// return and reset DTR change indicator
+bool checkDtrIrq(void) {
+   bool ret = dtrWentInactive;
+   dtrWentInactive = false;
+   return ret;
+}
+
 void doAtCmds(char *atCmd);             // forward delcaration
 
 //
@@ -628,10 +640,19 @@ void displayCurrentSettings(void) {
    Serial.printf("mDNS name..: %s.local\r\n", settings.mdnsName); yield();
    Serial.printf("Server port: %u\r\n", settings.listenPort); yield();
    Serial.printf("Busy msg...: %s\r\n", settings.busyMsg); yield();
-   Serial.printf("E%u Q%u V%u X%u &K%u NET%u S0=%u S2=%u\r\n",
-      settings.echo, settings.quiet, settings.verbose,
-      settings.extendedCodes, settings.rtsCts, settings.telnet,
-      settings.autoAnswer, settings.escChar); yield();
+   Serial.printf("E%u L%u M%u Q%u V%u X%u &D%u &K%u NET%u S0=%u S2=%u\r\n",
+      settings.echo,
+      settings.volume,
+      settings.speaker,
+      settings.quiet,
+      settings.verbose,
+      settings.extendedCodes,
+      settings.dtrHandling,
+      settings.rtsCts,
+      settings.telnet,
+      settings.autoAnswer,
+      settings.escChar);
+   yield();
 
    Serial.println(F("Speed dial:"));
    for( int i = 0; i < SPEED_DIAL_SLOTS; ++i ) {
@@ -663,11 +684,14 @@ void displayStoredSettings(void) {
    Serial.printf("mDNS name..: %s.local\r\n", EEPROM.get(offsetof(struct Settings, mdnsName), v_char80)); yield();
    Serial.printf("Server port: %u\r\n", EEPROM.get(offsetof(struct Settings, listenPort), v_uint16)); yield();
    Serial.printf("Busy Msg...: %s\r\n", EEPROM.get(offsetof(struct Settings, busyMsg),v_char80)); yield();
-   Serial.printf("E%u Q%u V%u X%u &K%u NET%u S0=%u S2=%u\r\n",
+   Serial.printf("E%u L%u M%u Q%u V%u X%u &D%u &K%u NET%u S0=%u S2=%u\r\n",
       EEPROM.get(offsetof(struct Settings, echo), v_bool),
+      EEPROM.get(offsetof(struct Settings, volume), v_uint8),
+      EEPROM.get(offsetof(struct Settings, speaker), v_bool),
       EEPROM.get(offsetof(struct Settings, quiet), v_bool),
       EEPROM.get(offsetof(struct Settings, verbose), v_bool),
       EEPROM.get(offsetof(struct Settings, extendedCodes), v_bool),
+      EEPROM.get(offsetof(struct Settings, dtrHandling), v_bool),
       EEPROM.get(offsetof(struct Settings, rtsCts), v_bool),
       EEPROM.get(offsetof(struct Settings, telnet), v_bool),
       EEPROM.get(offsetof(struct Settings, autoAnswer), v_uint8),

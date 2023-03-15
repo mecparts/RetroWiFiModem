@@ -1,0 +1,121 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP 1N4148
+D 100V 0.15A standard switching diode, DO-35
+K diode
+F https://assets.nexperia.com/documents/data-sheet/1N4148_1N4448.pdf
+$ENDCMP
+#
+$CMP 1N4149
+D 75V Vrm 0.5A Ifsm standard switching diode, DO-35
+K diode
+F http://www.microsemi.com/document-portal/doc_view/11580-lds-0239
+$ENDCMP
+#
+$CMP 1N4151
+D 75V 0.5A standard switching diode, DO-35
+K diode
+F http://www.microsemi.com/document-portal/doc_view/11580-lds-0239
+$ENDCMP
+#
+$CMP 1N4448
+D 100V 0.15A High-speed standard diode, DO-35
+K diode
+F https://assets.nexperia.com/documents/data-sheet/1N4148_1N4448.pdf
+$ENDCMP
+#
+$CMP 1N914
+D 100V 0.3A Small Signal Fast Switching Diode, DO-35
+K diode
+F http://www.vishay.com/docs/85622/1n914.pdf
+$ENDCMP
+#
+$CMP 74HC245
+D Octal BUS Transceivers, 3 State out
+K HCMOS BUS 3State
+$ENDCMP
+#
+$CMP 74LS245
+D Octal BUS Transceivers, 3 State out
+K TTL BUS 3State
+$ENDCMP
+#
+$CMP BA243
+D 20V 0.1A silicon planar diode for VHF tuner band selection, DO-35
+K diode
+F http://cdn-reichelt.de/documents/datenblatt/A400/BA243_TFK.pdf
+$ENDCMP
+#
+$CMP BA244
+D 20V 0.1A silicon planar diode for VHF tuner band selection, DO-35
+K diode
+F http://cdn-reichelt.de/documents/datenblatt/A400/BA243_TFK.pdf
+$ENDCMP
+#
+$CMP BA282
+D 35V 0.1A Band Switching Diode, DO-35
+K diode
+F http://docs-europe.electrocomponents.com/webdocs/1304/0900766b813040d6.pdf
+$ENDCMP
+#
+$CMP BA283
+D 35V 0.1A Band Switching Diode, DO-35
+K diode
+F http://docs-europe.electrocomponents.com/webdocs/1304/0900766b813040d6.pdf
+$ENDCMP
+#
+$CMP BAV17
+D 20V 0.25A Small Signal Switching Diode, High Voltage, DO-35
+K diode
+F http://www.vishay.com/docs/85543/bav17.pdf
+$ENDCMP
+#
+$CMP BAV18
+D 50V 0.25A Small Signal Switching Diode, High Voltage, DO-35
+K diode
+F http://www.vishay.com/docs/85543/bav17.pdf
+$ENDCMP
+#
+$CMP BAV19
+D 100V 0.25A Small Signal Switching Diode, High Voltage, DO-35
+K diode
+F http://www.vishay.com/docs/85543/bav17.pdf
+$ENDCMP
+#
+$CMP BAV20
+D 150V 0.25A Small Signal Switching Diode, High Voltage, DO-35
+K diode
+F http://www.vishay.com/docs/85543/bav17.pdf
+$ENDCMP
+#
+$CMP BAV21
+D 200V 0.25A Small Signal Switching Diode, High Voltage, DO-35
+K diode
+F http://www.vishay.com/docs/85543/bav17.pdf
+$ENDCMP
+#
+$CMP BAW75
+D 25V 0.45A Small Signal Switching Diode, DO-35
+K diode
+F http://www.vishay.com/docs/85550/baw75.pdf
+$ENDCMP
+#
+$CMP BAW76
+D 50V 0.3A Small Signal Fast Switching Diode, DO-35
+K diode
+F http://www.vishay.com/docs/85551/baw76.pdf
+$ENDCMP
+#
+$CMP BAY93
+D 20V 0.115A Very Fast Switching Diode, DO-35
+K diode
+F https://cdn-reichelt.de/documents/datenblatt/A400/BAY93_TFK.pdf
+$ENDCMP
+#
+$CMP R_Pack08_US_Split
+D 8 resistor network, parallel topology, split
+K R network parallel topology isolated
+F ~
+$ENDCMP
+#
+#End Doc Library

@@ -2,6 +2,8 @@
 
 ## An ESP8266 based RS232 \<-\> WiFi modem with Hayes AT style commands and LED indicators
 
+### (And yes, this version makes the noises)
+
 ![Front Panel](images/Front%20Panel.jpg "Front Panel")
 
 This project grew out of a desire to get an old Ampro LB+/Z80 hooked up
@@ -40,39 +42,44 @@ like to make."
 The hardware didn't change nearly as much from beginning to end. I did
 the development on a Wemos D1 R1 and a little half length solderless
 breadboard mounted together. The plan for the final hardware was always
-to use a [Wemos D1
-mini](https://docs.wemos.cc/en/latest/d1/d1_mini.html). A MAX3232 took
-care of the 3.3V <-> RS-232 level shifting, and a 74HCT245 was used to
-drive the indicator LEDs.
+to use a [Wemos D1 mini](https://docs.wemos.cc/en/latest/d1/d1_mini.html).
+A MAX3237 took care of the 3.3V <-> RS-232 level shifting, and a
+74HCT245 was used to drive the indicator LEDs.
 
 ![Prototype](images/Prototype.jpg "Prototype")
 
-The only major addition to the hardware during development was an OR
-gate on the serial output from the ESP8266. On startup, the ESP8266
-sends out some debug information (at an oddball baud rate) through the
-serial port. It shows up as garbage characters to whatever's hooked up
-to the serial port. It annoyed me enough that I fed the Tx signal
-through the OR gate, with the other input hooked up to an output pin
-that I could count on remaining high (thereby masking off the Tx signal)
-until after the sketch had started and set it low.
+The only major additions to the hardware during development was an OR
+gate on the serial output from the ESP8266 and the addition of a
+DFPlayer Mini for the dialing and connection sounds.
+
+On startup, the ESP8266 sends out some debug information
+(at an oddball baud rate) through the serial port. It shows up as
+garbage characters to whatever's hooked up to the serial port. It
+annoyed me enough that I fed the Tx signal through the OR gate, with the
+other input hooked up to an output pin that I could count on remaining
+high (thereby masking off the Tx signal) until after the sketch had
+started and set it low.
+
+And while it didn't make the cut the first time around, there's a
+DFPlayer Mini in this version for faux dialing and connection sounds.
+They really do complete the whole retro feel (but they can be turned off
+too).
 
 ## The Hardware
 
 ![Interior](images/Interior.jpg "Interior")
 
-I made the decision to use through hole components throughout; retro
-components for a retro modem. Besides, I already had most of them in my
-parts box!
+The second time around, I decided that I was going to bite the bullet
+and go with some surface mount stuff, starting with the MAX3237. Having
+a full suite of RS-232 control signals seemed worth it. I stuck with
+through hole components where I could (I already had most of them in my
+parts box) but adding the DFPlayer Mini meant that the 74HC32 and
+74HCT245 had to be surface mount just to make them fit.
 
 In keeping with the retro theme, the modem uses classic Hayes style
 blinking LEDs and a DE-9F for the RS-232 connector. Everything is
-displayed: RTS, CTS, DSR, DTR, DCD, RI, TxD and RxD. However, only RxD,
-TxD, RTS and CTS are actually brought out on the DE-9F connector. The
-Ampro LB only brought those four signals out so it would have been
-overkill for the modem I was designing for it to support anything more.
-Additionally, it would have required another three MAX3232 ICs to do it
-(had the MAX3237 been available in DIP, I *might* have had a harder time
-saying no...).
+displayed and brought out to the DE-9F connector: RTS, CTS, DSR, DTR,
+DCD, RI, TxD and RxD.
 
 The PCB is laid out for a
 [Wemos D1 mini](https://docs.wemos.cc/en/latest/d1/d1_mini.html) and the
@@ -100,20 +107,13 @@ let the magic smoke out and have an ex-modem on your hands.
 
 On the off chance that there's someone else out there with a well
 stocked parts box and a burning desire to put together their own WiFi
-modem, there's a [BOM](kicad/RetroWiFiModem-kicad4-bom.csv) in the kicad
+modem, there's a [BOM](kicad/RetroWiFiModem-bom.csv) in the kicad
 sub directory. If you actually had to go out and buy all the parts, it
 really wouldn't be cost effective.
 
 Then again, how practical is getting an Ampro Little Board on the
 Internet? Practicality isn't always everything. Sometimes nostalgia is
 worth the effort.
-
-### Didn't make the cut
-
-I have to admit that I semi-seriously considered adding one of those
-little audio playback modules for faux dialing and connection sounds.
-It would have been in keeping with the whole retro theme. But in the end
-I decided not to. Maybe next time.
 
 ## The case
 
@@ -143,10 +143,6 @@ pricey. But there's plenty of room for an ordinary solder cup DE-9F.
 You'd most likely want to omit the 10 pin header and just wire the DE-9F
 right to the board.
 
-You might notice that the vias are unusually large by today's standards.
-The reason for that is to allow the option of constructing the PCB as a
-single sided board, replacing the top layer of copper with 11 jumpers.
-
 ## The Software
 
 In a nod to its popularity, the command set I used largely follows that
@@ -157,7 +153,7 @@ everyone's been copying the Hayes command set for almost 40 years!
 
 ### First time setup
 
-The default serial configuration is 1200bps, 8 data bits, no parity, 1
+The default serial configuration is 9600bps, 8 data bits, no parity, 1
 stop bit.
 
 Here's the commands you need to set up the modem to automatically
@@ -173,6 +169,7 @@ network.
    * `AT$SU=dps` to set the data bits, parity and stop bits.
    * `ATNETn` to select whether or not to use Telnet protocol.
    * `AT&Kn` to use RTS/CTS flow control or not.
+   * `AT&Dn` to set up DTR handling.
 5. `AT&W` to save the settings.
 
 Once you've done that, the modem will automatically connect to your WiFi
@@ -201,6 +198,8 @@ ATE?<br>ATE*n* | Command mode echo. Enables or disables the display of your type
 ATGET*http&#58;//host[/page]* | Displays the contents of a website page. **https** connections are not supported. Once the contents have been displayed, the connection will automatically terminate.
 ATH | Hangs up (ends) the current connection.
 ATI | Displays the current network status, including sketch build date, WiFi and call connection state, SSID name, IP address, and bytes transferred.
+ATL?<br>ATL*n* | Query or set the volume of the speaker (0-3).
+ATM?<br>ATM*n* | Query or set whether the speaker is enabled or disabled. ATM0 disables the speaker. ATM1 enables it.
 ATNET?<br>ATNET*n* | Query or change whether telnet protocol is enabled. A result of 0 means that telnet protocol is disabled; 1 is *Real* telnet protocol and 2 is *Fake* telnet protocol. If you are connecting to a telnet server, it may expect the modem to respond to various telnet commands, such as terminal name (set with `AT$TTY`), terminal window size (set with `AT$TTS`) or terminal speed. Telnet protocol should be enabled for these sites, or you will at best see occasional garbage characters on your screen, or at worst the connection may fail.<br><br>The difference between *real* and *fake* telnet protocol is this: with *real* telnet protocol, a carriage return (CR) character being sent from the modem to the telnet server always has a NUL character added after it. The implementation of the telnet protocol used by some BBSes doesn't properly strip out the NUL character. When connecting to such BBSes (Particles! is one), use *fake* telnet.<br><br>When using *real* telnet protocol, when the telnet server sends a CR character followed by a NUL character, only the CR character will be sent to the serial port; the NUL character will be silently stripped out. With *fake* telnet protocol, the NUL will be passed through.
 ATO | Return online. Use with the escape code (+++) to toggle between command and online modes.
 ATQ?<br>ATQ*n* | Enable or disable the display of result codes. The default is Q0.<br><br><ul><li>Q0 Display result codes.</li><li>Q1 Suppress result codes (quiet).</li></ul>
@@ -211,6 +210,7 @@ ATV?<br>ATV*n* | Display result codes in words or numbers. The default is V1.<br
 ATX?<br>ATX*n* | Control the amount of information displayed in the result codes. The default is X1 (extended codes).<br><br><ul><li>X0 Display basic codes (CONNECT, NO CARRIER)</li><li>X1 Display extended codes (CONNECT speed, NO CARRIER (connect time))</li></ul>
 ATZ | Resets the modem.
 AT&F | Reset the NVRAM contents and current settings to the sketch defaults. All settings, including SSID name, password and speed dial slots are affected.
+AT&D?<br>AT&D*n* | Display or set the handling of DTR going inactive. The default is &D0 (ignored).<br><br><ul><li>&D0 Ignore</li><li>&D1 Go to command mode</li><li>&D2 End call</li><li>&D3 Reset modem</li></ul>
 AT&K?<br>AT&K*n* | Data flow control. Prevents the modem's buffers for received and transmitted from overflowing.<br><br><ul><li>&K0 Disable data flow control.</li><li>&K1 Use hardware flow control. Requires that your computer and software support Clear to Send (CTS) and Request to Send (RTS) at the RS-232 interface.</li></ul>
 AT&R?<br>AT&R=*server pwd* | Query or change the password for incoming connections. If set, the user has 3 chances in 60 seconds to enter the correct password or the modem will end the connection.
 AT&V*n* | Display current or stored settings.<br><br><ul><li>&V0 Display current settings.</li><li>&V1 Display stored settings.</li></ul>
@@ -309,11 +309,15 @@ transmit FIFO, the watchdog is kept well fed and quiet.
 
 ## Status
 
-Is a personal project like this ever *really* finished? I've had two
-units assembled and in use since the spring of 2020, and while there's
-been some software changes since then, I really don't expect any more.
-There are no outstanding bugs that I'm aware of, and no new features on
-my wish list. For the time being at least, I think it's complete.
+As I said way back in 2020, is a personal project like this ever
+*really* finished? I've had two units assembled and in use since the
+spring of 2020, and a third since 2022, and while there's
+been some software changes since then, and a second rev of the hardware
+to bring out all the RS-232 control signals and add in the faux dialing
+and connections sounds, I really don't expect any more changes. But I've
+said that before! There are no outstanding bugs that I'm aware of, and
+no new features on my wish list. For the time being at least, I think
+it's complete.
 
 ### Linux, Telnet, Zmodem and downloading binary files
 

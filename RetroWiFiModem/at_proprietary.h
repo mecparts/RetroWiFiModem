@@ -34,6 +34,7 @@ char *doAreYouThere(char *atCmd) {
 
    if( tcpClient.connected() && settings.telnet != NO_TELNET ) {
       state = ONLINE;
+      dtrWentInactive = false;
       bytesOut += tcpClient.write(IAC);
       bytesOut += tcpClient.write(AYT);
    } else {

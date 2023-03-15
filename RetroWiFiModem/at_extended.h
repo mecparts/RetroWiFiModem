@@ -55,6 +55,62 @@ char *factoryDefaults(char *atCmd) {
 }
 
 //
+// AT&D? DTR handling setting
+// AT&D0 ignore DTR
+// AT&D1 go offline when DTR transitions to off
+// AT&D2 hang up when DTR transitions to off
+// AT&D3 reset when DTR transitions to off
+//
+char *doDtrHandling(char *atCmd) {
+   if( settings.dtrHandling != DTR_IGNORE ) {
+      detachInterrupt( digitalPinToInterrupt(DTR) );
+   }
+   switch( atCmd[0] ) {
+      case '?':
+         ++atCmd;
+         printf("%u\r\n", (uint8_t)settings.dtrHandling);
+         if( !atCmd[0] ) {
+            sendResult(R_OK);
+         }
+         break;
+      case NUL:
+      case '0':
+      case '1':
+      case '2':
+      case '3':
+         switch( atCmd[0] ) {
+            case NUL:
+            case '0':
+               settings.dtrHandling = DTR_IGNORE;
+               break;
+            case '1':
+               settings.dtrHandling = DTR_GOTO_COMMAND;
+               break;
+            case '2':
+               settings.dtrHandling = DTR_END_CALL;
+               break;
+            case '3':
+               settings.dtrHandling = DTR_RESET;
+               break;
+         }
+         if( settings.dtrHandling != DTR_IGNORE ) {
+            attachInterrupt( digitalPinToInterrupt(DTR), dtrIrq, RISING );
+         }
+         if( atCmd[0] ) {
+            ++atCmd;
+         }
+         if( !atCmd[0] ) {
+            sendResult(R_OK);
+         }
+         break;
+      default:
+         sendResult(R_ERROR);
+         break;
+   }
+   return atCmd;
+}
+
+//
 // AT&K? query flow control setting
 // AT&K0 disable RTS/CTS flow control
 // AT&K1 enable RTS/CTS flow control
