@@ -213,6 +213,14 @@ int receiveTcpData() {
                   case LFLOW:
                   case NEW_ENVIRON:
                   case XDISPLOC:
+                  case MSDP:        //
+                  case MSSP:        //
+                  case MCCP:        //
+                  case MCCP2:       // don't do MUD Telnet extensions
+                  case MCCP3:       //
+                  case MSP:         //
+                  case MXP:         //
+                  case GMCP:        //
                      bytesOut += tcpClient.write(DONT);
                      break;
                   default:

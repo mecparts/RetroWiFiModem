@@ -52,6 +52,14 @@
    #define LINEMODE  ((uint8_t)34)
    #define XDISPLOC  ((uint8_t)35)
    #define NEW_ENVIRON ((uint8_t)39)
+   #define MSDP      ((uint8_t)69)  //
+   #define MSSP      ((uint8_t)70)  //
+   #define MCCP      ((uint8_t)85)  //
+   #define MCCP2     ((uint8_t)86)  //
+   #define MCCP3     ((uint8_t)87)  // MUD Telnet extensions
+   #define MSP       ((uint8_t)91)  //
+   #define MXP       ((uint8_t)93)  //
+   #define GMCP      ((uint8_t)201) //
    #define BINARY    ((uint8_t)0)
    #define ECHO      ((uint8_t)1)
    #define SUP_GA    ((uint8_t)3)
