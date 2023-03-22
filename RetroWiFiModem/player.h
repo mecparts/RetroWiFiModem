@@ -47,8 +47,24 @@ void playerChecksum(T_DFCMD *cmd) {
 
 // Set volume
 void playerSetVolume(uint8_t volume) {
+	uint8_t val;
+
    playerVolume = volume;
-   setVolume.param[1] = volume * 10;
+	switch( volume ) {
+		case 0:
+			val = 0;
+			break;
+		case 1:
+			val = 20;
+			break;
+		case 2:
+			val = 25;
+			break;
+		default:
+			val = 30;
+			break;
+	}
+   setVolume.param[1] = val;
    playerChecksum(&setVolume);
    Serial1.write((uint8_t *)&setVolume, sizeof setVolume);
 }
