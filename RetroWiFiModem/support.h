@@ -642,7 +642,7 @@ void getHostAndPort(char *number, char* &host, char* &port, int &portNum) {
 //
 void displayCurrentSettings(void) {
    Serial.println(F("Active Profile:")); yield();
-   Serial.printf("Baud.......: %lu\r\n", settings.serialSpeed); yield();
+   Serial.printf("Baud.......: %u\r\n", settings.serialSpeed); yield();
    Serial.printf("SSID.......: %s\r\n", settings.ssid); yield();
    Serial.printf("Pass.......: %s\r\n", settings.wifiPassword); yield();
    Serial.printf("mDNS name..: %s.local\r\n", settings.mdnsName); yield();
@@ -686,7 +686,7 @@ void displayStoredSettings(void) {
    char v_char64[64 + 1];
    char v_char80[80 + 1];
    Serial.println(F("Stored Profile:")); yield();
-   Serial.printf("Baud.......: %lu\r\n", EEPROM.get(offsetof(struct Settings, serialSpeed),v_uint32)); yield();
+   Serial.printf("Baud.......: %u\r\n", EEPROM.get(offsetof(struct Settings, serialSpeed),v_uint32)); yield();
    Serial.printf("SSID.......: %s\r\n", EEPROM.get(offsetof(struct Settings, ssid), v_char32)); yield();
    Serial.printf("Pass.......: %s\r\n", EEPROM.get(offsetof(struct Settings, wifiPassword), v_char64)); yield();
    Serial.printf("mDNS name..: %s.local\r\n", EEPROM.get(offsetof(struct Settings, mdnsName), v_char80)); yield();

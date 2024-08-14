@@ -123,7 +123,7 @@ char *speedDialNumber(char *atCmd) {
 // ATDThost[:port] dial a number
 //
 char *dialNumber(char *atCmd) {
-   char *host, *port, *ptr;
+   char *host, *port;
    char tempNumber[MAX_SPEED_DIAL_LEN + 1];
    int portNum;
 
@@ -184,7 +184,7 @@ char *dialNumber(char *atCmd) {
       delay(2000);   // delay for ZMP to be able to detect CONNECT
    } else {
       uint8_t dialNumber = 0;
-      for( int i=0; i<strlen(host); ++i ) {
+      for( unsigned i=0; i<strlen(host); ++i ) {
          dialNumber += host[i];
       }
       dialNumber %= NUM_DIAL_SOUNDS;
@@ -387,7 +387,7 @@ char *showHelp(char *atCmd) {
    PagedOut(F("AT Command Summary:"), true);
    if( settings.width >= 80 ) {
       // dual columns
-      for( int i=0; i<NUM_HELP_STRS/2; ++i ) {
+      for( unsigned i=0; i<NUM_HELP_STRS/2; ++i ) {
          strncpy_P(helpLine1, helpStrs[i], (sizeof helpLine1)-1);
          helpLine[(sizeof helpLine1)-1] = 0;
          strncpy_P(helpLine2, helpStrs[i+NUM_HELP_STRS/2], sizeof helpLine2);
@@ -404,7 +404,7 @@ char *showHelp(char *atCmd) {
       }
    } else {
       // single column
-      for( int i=0; i<NUM_HELP_STRS; ++i ) {
+      for( unsigned i=0; i<NUM_HELP_STRS; ++i ) {
          strncpy_P(helpLine,helpStrs[i], (sizeof helpLine)-1);
          helpLine[(sizeof helpLine)-1] = 0;
          if( PagedOut(helpLine) ) {

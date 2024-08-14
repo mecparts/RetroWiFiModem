@@ -37,8 +37,6 @@
 
 // =============================================================
 void setup(void) {
-   bool ok = true;
-
    pinMode(RI, OUTPUT);
    pinMode(DCD, OUTPUT);
    pinMode(DSR, OUTPUT);
@@ -186,6 +184,9 @@ void loop(void) {
 
                case DTR_RESET:
                   resetToNvram(NULL);
+                  break;
+
+               default:
                   break;
             }
          }
