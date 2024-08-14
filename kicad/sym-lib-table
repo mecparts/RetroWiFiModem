@@ -1,3 +1,2 @@
 (sym_lib_table
-  (lib (name RetroWiFiModem)(type Legacy)(uri ${KIPRJMOD}/library/RetroWiFiModem.lib)(options "")(descr ""))
 )
