@@ -190,7 +190,7 @@ char *dialNumber(char *atCmd) {
       dialNumber %= NUM_DIAL_SOUNDS;
       playSound(SOUND_DIAL_TONE);
       playSound(SOUND_DIALLING+dialNumber);
-      delay(500);
+      delay(2500);
       playSound(SOUND_RING);
       if( settings.serialSpeed < 1200 ) {
          playSound(SOUND_CONNECT_300);

@@ -163,7 +163,7 @@ void loop(void) {
             }
          }
 
-         if( escCount == ESC_COUNT && millis() > guardTime ) {
+         if( escCount == ESC_COUNT && startGuardTime && millis() - startGuardTime > GUARD_TIME ) {
             state = CMD_IN_CALL;          // +++ detected, back to command mode
             sendResult(R_OK);
             escCount = 0;

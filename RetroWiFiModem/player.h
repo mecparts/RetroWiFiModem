@@ -20,16 +20,20 @@ void playerInit(void) {
 }
 
 bool playerIsBusy(void) {
-	return !digitalRead(BUSY);
+   return !digitalRead(BUSY);
 }
 
 // waits while the busy signal is low or timeout
 void playerBusy(uint16_t pause) {
-   uint32_t endtime = millis() + pause;
+   uint32_t startTime = millis();
+   bool busyWentActive = false;
 
-   while( playerIsBusy() || millis() < endtime ) {
-      if( playerIsBusy() && endtime != 0 ) {
-         endtime = 0;
+   while( playerIsBusy() || millis() - startTime < pause ) {
+      if( !busyWentActive && playerIsBusy() ) {
+         busyWentActive = true;
+      }
+      if( busyWentActive && !playerIsBusy() ) {
+         break;
       }
       yield();
    }

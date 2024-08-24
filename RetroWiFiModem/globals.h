@@ -57,9 +57,9 @@
 
    bool     ringing = false;     // no incoming call
    uint8_t  ringCount = 0;       // current incoming call ring count
-   uint32_t nextRingMs = 0;      // time of mext RING result
+   uint32_t lastRingMs = 0;      // time of last RING result
    uint8_t  escCount = 0;        // Go to AT mode at "+++" sequence, that has to be counted
-   uint32_t guardTime = 0;       // When did we last receive a "+++" sequence
+   uint32_t startGuardTime = 0;  // When did we last receive a "+++" sequence
    char     password[MAX_PWD_LEN + 1];
    uint8_t  passwordTries = 0;   // # of unsuccessful tries at incoming password
    uint8_t  passwordLen = 0;
