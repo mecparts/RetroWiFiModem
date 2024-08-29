@@ -189,15 +189,27 @@ char *dialNumber(char *atCmd) {
       }
       dialNumber %= NUM_DIAL_SOUNDS;
       playSound(SOUND_DIAL_TONE);
-      playSound(SOUND_DIALLING+dialNumber);
-      delay(2500);
-      playSound(SOUND_RING);
-      if( settings.serialSpeed < 1200 ) {
-         playSound(SOUND_CONNECT_300);
-      } else if( settings.serialSpeed < 9600 ) {
-         playSound(SOUND_CONNECT_1200);
-      } else {
-         playSound(SOUND_CONNECT_9600);
+      if( !Serial.available() ) {
+         playSound(SOUND_DIALLING+dialNumber);
+         if( !Serial.available() ) {
+            unsigned long ringDelay = millis();
+            // wait 2.5 seconds after dialling for first ring tone
+            while( millis() - ringDelay < 2500 && !Serial.available() ) {
+               delay(10);
+            }
+            if( !Serial.available() ) {
+               playSound(SOUND_RING);
+               if( !Serial.available() ) {
+                  if( settings.serialSpeed < 1200 ) {
+                     playSound(SOUND_CONNECT_300);
+                  } else if( settings.serialSpeed < 9600 ) {
+                     playSound(SOUND_CONNECT_1200);
+                  } else {
+                     playSound(SOUND_CONNECT_9600);
+                  }
+               }
+            }
+         }
       }
    }
    if( !Serial.available() && tcpClient.connect(host, portNum) ) {
