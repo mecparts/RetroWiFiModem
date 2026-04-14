@@ -73,7 +73,7 @@
    #define DONT      ((uint8_t)254)
    #define IAC       ((uint8_t)255)
 
-   #define NIST_HOST "time.nist.gov"
+   #define NIST_HOST "time-a-g.nist.gov"
    #define NIST_PORT 13
 
    #define ACTIVE LOW           // RS232 control signals are active low

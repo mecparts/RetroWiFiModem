@@ -449,6 +449,7 @@ void checkForIncomingCall() {
             delay(1000);
             state = ONLINE;
             amClient = false;
+            dtrWentInactive = false;
             sendResult(R_CONNECT);
          }
          connectTime = millis();
